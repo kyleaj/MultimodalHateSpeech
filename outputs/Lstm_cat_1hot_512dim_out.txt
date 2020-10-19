@@ -1,0 +1,1100 @@
+0
+Train loss: 
+0.6573233943093907
+Train acc: 
+tensor(63.7547, device='cuda:0')
+Eval loss: 
+0.7417327421052116
+Eval acc: 
+49.55357360839844
+
+
+1
+Train loss: 
+0.6463083078463873
+Train acc: 
+tensor(64.0743, device='cuda:0')
+Eval loss: 
+0.7554439306259155
+Eval acc: 
+49.55357360839844
+
+
+2
+Train loss: 
+0.6411963200027292
+Train acc: 
+tensor(64.1572, device='cuda:0')
+Eval loss: 
+0.7109734160559518
+Eval acc: 
+49.55357360839844
+
+
+3
+Train loss: 
+0.6371262570222219
+Train acc: 
+tensor(64.2045, device='cuda:0')
+Eval loss: 
+0.6958955356052944
+Eval acc: 
+54.017860412597656
+
+
+4
+Train loss: 
+0.6363580795851621
+Train acc: 
+tensor(63.9086, device='cuda:0')
+Eval loss: 
+0.7188155736242022
+Eval acc: 
+49.330360412597656
+
+
+5
+Train loss: 
+0.6313282285224308
+Train acc: 
+tensor(64.9740, device='cuda:0')
+Eval loss: 
+0.7318778548921857
+Eval acc: 
+53.34821701049805
+
+
+6
+Train loss: 
+0.6310022166281035
+Train acc: 
+tensor(64.2637, device='cuda:0')
+Eval loss: 
+0.7653184447969709
+Eval acc: 
+49.330360412597656
+
+
+7
+Train loss: 
+0.6251257527055163
+Train acc: 
+tensor(65.4711, device='cuda:0')
+Eval loss: 
+0.7087058169501168
+Eval acc: 
+54.91071701049805
+
+
+8
+Train loss: 
+0.6242712099443782
+Train acc: 
+tensor(64.7017, device='cuda:0')
+Eval loss: 
+0.7390174525124686
+Eval acc: 
+48.21428680419922
+
+
+9
+Train loss: 
+0.6225659657608379
+Train acc: 
+tensor(65.6250, device='cuda:0')
+Eval loss: 
+0.7702748349734715
+Eval acc: 
+49.55357360839844
+
+
+10
+Train loss: 
+0.6180474758148193
+Train acc: 
+tensor(65.9801, device='cuda:0')
+Eval loss: 
+0.7354901773588998
+Eval acc: 
+53.34821701049805
+
+
+11
+Train loss: 
+0.6125563742084936
+Train acc: 
+tensor(65.7552, device='cuda:0')
+Eval loss: 
+0.7859498347554889
+Eval acc: 
+50.000003814697266
+
+
+12
+Train loss: 
+0.6102354244300814
+Train acc: 
+tensor(66.0511, device='cuda:0')
+Eval loss: 
+0.7974064520427159
+Eval acc: 
+49.10714340209961
+
+
+13
+Train loss: 
+0.6072146375522469
+Train acc: 
+tensor(66.6075, device='cuda:0')
+Eval loss: 
+0.8255203110831124
+Eval acc: 
+47.54464340209961
+
+
+14
+Train loss: 
+0.5961940130501082
+Train acc: 
+tensor(67.5071, device='cuda:0')
+Eval loss: 
+0.7783830847058978
+Eval acc: 
+52.23214340209961
+
+
+15
+Train loss: 
+0.5831916138078227
+Train acc: 
+tensor(68.8920, device='cuda:0')
+Eval loss: 
+0.7889753154345921
+Eval acc: 
+49.77678680419922
+
+
+16
+Train loss: 
+0.5518110078392606
+Train acc: 
+tensor(71.8395, device='cuda:0')
+Eval loss: 
+0.8106103028569903
+Eval acc: 
+49.77678680419922
+
+
+17
+Train loss: 
+0.5356837700713765
+Train acc: 
+tensor(72.9877, device='cuda:0')
+Eval loss: 
+1.0039340938840593
+Eval acc: 
+48.437503814697266
+
+
+18
+Train loss: 
+0.49686180755044473
+Train acc: 
+tensor(76.1127, device='cuda:0')
+Eval loss: 
+0.9017806393759591
+Eval acc: 
+50.000003814697266
+
+
+19
+Train loss: 
+0.46790376711975445
+Train acc: 
+tensor(77.9001, device='cuda:0')
+Eval loss: 
+0.8573550837380546
+Eval acc: 
+50.44643020629883
+
+
+20
+Train loss: 
+0.44917828544522775
+Train acc: 
+tensor(78.9299, device='cuda:0')
+Eval loss: 
+1.0628195745604379
+Eval acc: 
+48.88393020629883
+
+
+21
+Train loss: 
+0.4358524781736461
+Train acc: 
+tensor(79.2495, device='cuda:0')
+Eval loss: 
+0.9811818514551435
+Eval acc: 
+50.000003814697266
+
+
+22
+Train loss: 
+0.413936344285806
+Train acc: 
+tensor(81.1316, device='cuda:0')
+Eval loss: 
+1.1253351143428258
+Eval acc: 
+48.21428680419922
+
+
+23
+Train loss: 
+0.38487927660797583
+Train acc: 
+tensor(82.8717, device='cuda:0')
+Eval loss: 
+1.3344570738928658
+Eval acc: 
+49.10714340209961
+
+
+24
+Train loss: 
+0.3381456510361397
+Train acc: 
+tensor(84.8011, device='cuda:0')
+Eval loss: 
+1.253287434577942
+Eval acc: 
+51.562503814697266
+
+
+25
+Train loss: 
+0.32418529023275233
+Train acc: 
+tensor(85.7955, device='cuda:0')
+Eval loss: 
+1.257400529725211
+Eval acc: 
+51.11607360839844
+
+
+26
+Train loss: 
+0.30867324667898094
+Train acc: 
+tensor(86.6004, device='cuda:0')
+Eval loss: 
+1.4002225399017334
+Eval acc: 
+51.562503814697266
+
+
+27
+Train loss: 
+0.2771379558200186
+Train acc: 
+tensor(87.9735, device='cuda:0')
+Eval loss: 
+1.3912712676184518
+Eval acc: 
+48.437503814697266
+
+
+28
+Train loss: 
+0.25315828000505763
+Train acc: 
+tensor(89.4058, device='cuda:0')
+Eval loss: 
+1.4721586874553136
+Eval acc: 
+50.22321701049805
+
+
+29
+Train loss: 
+0.2335443115144065
+Train acc: 
+tensor(90.0213, device='cuda:0')
+Eval loss: 
+1.4247141224997384
+Eval acc: 
+50.22321701049805
+
+
+30
+Train loss: 
+0.22769286895565916
+Train acc: 
+tensor(90.2580, device='cuda:0')
+Eval loss: 
+1.547627397945949
+Eval acc: 
+47.99107360839844
+
+
+31
+Train loss: 
+0.20766203551355636
+Train acc: 
+tensor(91.3826, device='cuda:0')
+Eval loss: 
+1.9382222550255912
+Eval acc: 
+53.125003814697266
+
+
+32
+Train loss: 
+0.16934234679987034
+Train acc: 
+tensor(93.1818, device='cuda:0')
+Eval loss: 
+1.9511979137148177
+Eval acc: 
+52.00893020629883
+
+
+33
+Train loss: 
+0.1700469937006181
+Train acc: 
+tensor(93.2173, device='cuda:0')
+Eval loss: 
+1.9612525531223841
+Eval acc: 
+51.33928680419922
+
+
+34
+Train loss: 
+0.21247703988443722
+Train acc: 
+tensor(91.4773, device='cuda:0')
+Eval loss: 
+1.6498575040272303
+Eval acc: 
+49.77678680419922
+
+
+35
+Train loss: 
+0.17409004254097288
+Train acc: 
+tensor(93.2410, device='cuda:0')
+Eval loss: 
+2.029693603515625
+Eval acc: 
+50.000003814697266
+
+
+36
+Train loss: 
+0.16561864559171777
+Train acc: 
+tensor(93.5724, device='cuda:0')
+Eval loss: 
+1.8940824270248413
+Eval acc: 
+50.66964340209961
+
+
+37
+Train loss: 
+0.158701341599226
+Train acc: 
+tensor(93.6435, device='cuda:0')
+Eval loss: 
+2.236895510128566
+Eval acc: 
+47.54464340209961
+
+
+38
+Train loss: 
+0.13992171545484752
+Train acc: 
+tensor(94.4247, device='cuda:0')
+Eval loss: 
+2.165134276662554
+Eval acc: 
+49.55357360839844
+
+
+39
+Train loss: 
+0.12301812174193787
+Train acc: 
+tensor(95.2178, device='cuda:0')
+Eval loss: 
+2.444430419376918
+Eval acc: 
+47.54464340209961
+
+
+40
+Train loss: 
+0.117963305759159
+Train acc: 
+tensor(95.4901, device='cuda:0')
+Eval loss: 
+2.255763990538461
+Eval acc: 
+51.11607360839844
+
+
+41
+Train loss: 
+0.10586885648610239
+Train acc: 
+tensor(96.2713, device='cuda:0')
+Eval loss: 
+2.197013292993818
+Eval acc: 
+47.09821701049805
+
+
+42
+Train loss: 
+0.11522246928264697
+Train acc: 
+tensor(95.5729, device='cuda:0')
+Eval loss: 
+2.621641533715384
+Eval acc: 
+46.65178680419922
+
+
+43
+Train loss: 
+0.09109564726664261
+Train acc: 
+tensor(96.6974, device='cuda:0')
+Eval loss: 
+2.6648525169917514
+Eval acc: 
+48.88393020629883
+
+
+44
+Train loss: 
+0.07677096833658377
+Train acc: 
+tensor(97.0881, device='cuda:0')
+Eval loss: 
+2.4746985946382796
+Eval acc: 
+49.55357360839844
+
+
+45
+Train loss: 
+0.0832227746264614
+Train acc: 
+tensor(96.9105, device='cuda:0')
+Eval loss: 
+2.6423979146139964
+Eval acc: 
+50.892860412597656
+
+
+46
+Train loss: 
+0.09084374442781237
+Train acc: 
+tensor(96.7685, device='cuda:0')
+Eval loss: 
+2.302663598741804
+Eval acc: 
+47.32143020629883
+
+
+47
+Train loss: 
+0.07592573150230403
+Train acc: 
+tensor(97.1354, device='cuda:0')
+Eval loss: 
+2.966625315802438
+Eval acc: 
+48.21428680419922
+
+
+48
+Train loss: 
+0.08107972792067537
+Train acc: 
+tensor(97.0171, device='cuda:0')
+Eval loss: 
+2.456741043499538
+Eval acc: 
+49.77678680419922
+
+
+49
+Train loss: 
+0.08931146045638756
+Train acc: 
+tensor(96.5317, device='cuda:0')
+Eval loss: 
+2.5342841148376465
+Eval acc: 
+46.65178680419922
+
+
+50
+Train loss: 
+0.07949880837942615
+Train acc: 
+tensor(97.1473, device='cuda:0')
+Eval loss: 
+2.591069289616176
+Eval acc: 
+48.437503814697266
+
+
+51
+Train loss: 
+0.07705824712474803
+Train acc: 
+tensor(97.2183, device='cuda:0')
+Eval loss: 
+2.47355660370418
+Eval acc: 
+50.000003814697266
+
+
+52
+Train loss: 
+0.07406729382152359
+Train acc: 
+tensor(97.2064, device='cuda:0')
+Eval loss: 
+2.8000031539372037
+Eval acc: 
+48.88393020629883
+
+
+53
+Train loss: 
+0.0611610352502656
+Train acc: 
+tensor(97.7983, device='cuda:0')
+Eval loss: 
+3.0346595219203403
+Eval acc: 
+48.88393020629883
+
+
+54
+Train loss: 
+0.07951346189348084
+Train acc: 
+tensor(97.2183, device='cuda:0')
+Eval loss: 
+2.810725143977574
+Eval acc: 
+48.66071701049805
+
+
+55
+Train loss: 
+0.07405902969185263
+Train acc: 
+tensor(97.3603, device='cuda:0')
+Eval loss: 
+2.9477968897138322
+Eval acc: 
+49.10714340209961
+
+
+56
+Train loss: 
+0.052617687151668535
+Train acc: 
+tensor(98.1771, device='cuda:0')
+Eval loss: 
+3.0292820930480957
+Eval acc: 
+49.55357360839844
+
+
+57
+Train loss: 
+0.07214991879917568
+Train acc: 
+tensor(97.4669, device='cuda:0')
+Eval loss: 
+2.7646208150046214
+Eval acc: 
+48.66071701049805
+
+
+58
+Train loss: 
+0.06781673003834757
+Train acc: 
+tensor(97.6326, device='cuda:0')
+Eval loss: 
+3.1525888783591136
+Eval acc: 
+46.42857360839844
+
+
+59
+Train loss: 
+0.047927717500098166
+Train acc: 
+tensor(98.2718, device='cuda:0')
+Eval loss: 
+2.7367666448865617
+Eval acc: 
+47.99107360839844
+
+
+60
+Train loss: 
+0.058706298190923975
+Train acc: 
+tensor(98.0587, device='cuda:0')
+Eval loss: 
+2.838928290775844
+Eval acc: 
+48.88393020629883
+
+
+61
+Train loss: 
+0.05936234706137894
+Train acc: 
+tensor(97.9167, device='cuda:0')
+Eval loss: 
+2.989556244441441
+Eval acc: 
+48.437503814697266
+
+
+62
+Train loss: 
+0.06295678702140735
+Train acc: 
+tensor(97.7391, device='cuda:0')
+Eval loss: 
+3.284980467387608
+Eval acc: 
+48.437503814697266
+
+
+63
+Train loss: 
+0.09378458626540095
+Train acc: 
+tensor(96.7093, device='cuda:0')
+Eval loss: 
+2.8406605379922047
+Eval acc: 
+46.205360412597656
+
+
+64
+Train loss: 
+0.06800010053539705
+Train acc: 
+tensor(97.5142, device='cuda:0')
+Eval loss: 
+3.0337937218802318
+Eval acc: 
+49.77678680419922
+
+
+65
+Train loss: 
+0.06889491753342251
+Train acc: 
+tensor(97.6089, device='cuda:0')
+Eval loss: 
+2.7897868837629045
+Eval acc: 
+49.55357360839844
+
+
+66
+Train loss: 
+0.05404878705281369
+Train acc: 
+tensor(98.1416, device='cuda:0')
+Eval loss: 
+3.4498844146728516
+Eval acc: 
+50.44643020629883
+
+
+67
+Train loss: 
+0.053595883203370526
+Train acc: 
+tensor(98.1653, device='cuda:0')
+Eval loss: 
+3.2201480524880544
+Eval acc: 
+46.875003814697266
+
+
+68
+Train loss: 
+0.07993199896406043
+Train acc: 
+tensor(96.9934, device='cuda:0')
+Eval loss: 
+2.6504197120666504
+Eval acc: 
+49.330360412597656
+
+
+69
+Train loss: 
+0.06380677282824322
+Train acc: 
+tensor(97.6326, device='cuda:0')
+Eval loss: 
+3.4730823380606517
+Eval acc: 
+48.21428680419922
+
+
+70
+Train loss: 
+0.03630473903754274
+Train acc: 
+tensor(98.6506, device='cuda:0')
+Eval loss: 
+3.1012727192470004
+Eval acc: 
+47.54464340209961
+
+
+71
+Train loss: 
+0.05596136539172607
+Train acc: 
+tensor(98.1653, device='cuda:0')
+Eval loss: 
+2.7346884182521274
+Eval acc: 
+47.767860412597656
+
+
+72
+Train loss: 
+0.06889025706473287
+Train acc: 
+tensor(97.5024, device='cuda:0')
+Eval loss: 
+3.1419106892177036
+Eval acc: 
+49.330360412597656
+
+
+73
+Train loss: 
+0.03911107707994454
+Train acc: 
+tensor(98.6269, device='cuda:0')
+Eval loss: 
+3.5698985031672885
+Eval acc: 
+48.437503814697266
+
+
+74
+Train loss: 
+0.05316809881090497
+Train acc: 
+tensor(98.1061, device='cuda:0')
+Eval loss: 
+3.7007245336260115
+Eval acc: 
+48.66071701049805
+
+
+75
+Train loss: 
+0.05639458466744558
+Train acc: 
+tensor(98.0232, device='cuda:0')
+Eval loss: 
+3.3110055923461914
+Eval acc: 
+51.33928680419922
+
+
+76
+Train loss: 
+0.059190155934739974
+Train acc: 
+tensor(97.7865, device='cuda:0')
+Eval loss: 
+3.069073370524815
+Eval acc: 
+47.99107360839844
+
+
+77
+Train loss: 
+0.05011075227274418
+Train acc: 
+tensor(98.1061, device='cuda:0')
+Eval loss: 
+2.995089599064418
+Eval acc: 
+48.437503814697266
+
+
+78
+Train loss: 
+0.04898640821744321
+Train acc: 
+tensor(98.2599, device='cuda:0')
+Eval loss: 
+3.0493884767804826
+Eval acc: 
+49.10714340209961
+
+
+79
+Train loss: 
+0.05070316939346605
+Train acc: 
+tensor(98.1297, device='cuda:0')
+Eval loss: 
+3.2435463156018938
+Eval acc: 
+47.09821701049805
+
+
+80
+Train loss: 
+0.043249168632566136
+Train acc: 
+tensor(98.4967, device='cuda:0')
+Eval loss: 
+3.0128447328295027
+Eval acc: 
+46.65178680419922
+
+
+81
+Train loss: 
+0.06197921740893049
+Train acc: 
+tensor(97.8338, device='cuda:0')
+Eval loss: 
+2.6168904645102367
+Eval acc: 
+51.33928680419922
+
+
+82
+Train loss: 
+0.0358346381222928
+Train acc: 
+tensor(98.8045, device='cuda:0')
+Eval loss: 
+3.4807030814034596
+Eval acc: 
+49.77678680419922
+
+
+83
+Train loss: 
+0.037218821789296766
+Train acc: 
+tensor(98.6979, device='cuda:0')
+Eval loss: 
+2.6227100236075267
+Eval acc: 
+49.77678680419922
+
+
+84
+Train loss: 
+0.048073129901295586
+Train acc: 
+tensor(98.1297, device='cuda:0')
+Eval loss: 
+3.471311024257115
+Eval acc: 
+48.88393020629883
+
+
+85
+Train loss: 
+0.0464225449058259
+Train acc: 
+tensor(98.4020, device='cuda:0')
+Eval loss: 
+3.424494130270822
+Eval acc: 
+46.65178680419922
+
+
+86
+Train loss: 
+0.030953541592073936
+Train acc: 
+tensor(98.9702, device='cuda:0')
+Eval loss: 
+3.7372189249311174
+Eval acc: 
+46.875003814697266
+
+
+87
+Train loss: 
+0.03449628958090519
+Train acc: 
+tensor(98.8518, device='cuda:0')
+Eval loss: 
+3.292334658758981
+Eval acc: 
+49.55357360839844
+
+
+88
+Train loss: 
+0.04974484444281905
+Train acc: 
+tensor(98.2836, device='cuda:0')
+Eval loss: 
+3.5445408480507985
+Eval acc: 
+47.09821701049805
+
+
+89
+Train loss: 
+0.03608383941393571
+Train acc: 
+tensor(98.8400, device='cuda:0')
+Eval loss: 
+3.4431509971618652
+Eval acc: 
+49.330360412597656
+
+
+90
+Train loss: 
+0.029880757559140242
+Train acc: 
+tensor(99.1004, device='cuda:0')
+Eval loss: 
+3.3179774284362793
+Eval acc: 
+49.77678680419922
+
+
+91
+Train loss: 
+0.025241432348125134
+Train acc: 
+tensor(99.2306, device='cuda:0')
+Eval loss: 
+4.335080623626709
+Eval acc: 
+47.54464340209961
+
+
+92
+Train loss: 
+0.05495234775871998
+Train acc: 
+tensor(98.0114, device='cuda:0')
+Eval loss: 
+3.1047874178205217
+Eval acc: 
+48.66071701049805
+
+
+93
+Train loss: 
+0.03625407691244177
+Train acc: 
+tensor(98.6742, device='cuda:0')
+Eval loss: 
+3.1219895226614818
+Eval acc: 
+49.55357360839844
+
+
+94
+Train loss: 
+0.04856042399434514
+Train acc: 
+tensor(98.3902, device='cuda:0')
+Eval loss: 
+3.2316338334764754
+Eval acc: 
+48.21428680419922
+
+
+95
+Train loss: 
+0.030717902986383928
+Train acc: 
+tensor(98.9110, device='cuda:0')
+Eval loss: 
+2.9009107521602084
+Eval acc: 
+48.88393020629883
+
+
+96
+Train loss: 
+0.04489480842973783
+Train acc: 
+tensor(98.5796, device='cuda:0')
+Eval loss: 
+2.5812338079724992
+Eval acc: 
+47.767860412597656
+
+
+97
+Train loss: 
+0.05146045849665604
+Train acc: 
+tensor(98.1889, device='cuda:0')
+Eval loss: 
+2.8046465601239885
+Eval acc: 
+50.66964340209961
+
+
+98
+Train loss: 
+0.03934426327186608
+Train acc: 
+tensor(98.7098, device='cuda:0')
+Eval loss: 
+3.4744011674608504
+Eval acc: 
+49.10714340209961
+
+
+99
+Train loss: 
+0.044039534372242284
+Train acc: 
+tensor(98.5085, device='cuda:0')
+Eval loss: 
+2.930917807987758
+Eval acc: 
+48.437503814697266
+
+
