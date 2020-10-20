@@ -20,6 +20,7 @@ class ImFeatureDataLoader:
         self.captions = []
         self.labels = []
         self.order = []
+        self.lengths = None
         self.device = device
 
         index = open(path_to_json, "r")
@@ -179,5 +180,76 @@ class ImFeatureDataLoader_OneHotEmbed(ImFeatureDataLoader):
         self.vocabulary = vocabulary
 
         self.max_len = max_len
+
+        print("Done!")
+
+class ImFeatureDataLoader_Glove(ImFeatureDataLoader):
+    def __init__(self, path_to_json, image_network, device, embeddings_path, remove_stop_words=True, embedding_dict=None):
+        self.remove_stop_words = remove_stop_words
+        self.embeddings_path = os.path.join("Embeddings", embeddings_path)
+        self.embedding_dict = embedding_dict
+        super().__init__(path_to_json, image_network, device)
+
+    def post_process_text(self):
+        if self.embedding_dict is None:
+            print("Loading embedding dictionary...")
+            self.embedding_dict = {}
+            f = open(self.embeddings_path, "r")
+            for line in f:
+                line = line.split()
+                word = line[0]
+                embedding = np.array(line[1:])
+                self.embedding_dict[word] = embedding
+            print("Done!")
+        else:
+            print("Reusing embedding dictionary")
+
+        print("Post processing text...")
+
+        print("Getting max text length")
+        max_len = -1
+        for caption in self.captions:
+            length = 0
+            for word in caption:
+                word = word.lower()
+                if self.remove_stop_words and word in eng_stopwords:
+                    continue
+                length += 1
+                if word.isalpha() or word.replace("_", "").isalpha():
+                    if word in frequency_count:
+                        frequency_count[word] += 1
+                    else:
+                        frequency_count[word] = 1
+            if length > max_len:
+                max_len = length
+
+        eng_stopwords = stopwords.words('english')
+
+        self.embed_dim = len(embedding_dict["the"]) # Assuming it has an embedding for "the"...
+        unknown = np.zeros_like(embedding_dict["the"])
+        self.lengths = [0] * len(self.captions)
+
+        print("Embedding dimension: " + str(self.embed_dim))
+
+        for i in range(len(self.captions)):
+            caption = self.captions[i]
+            one_hot_caption = [np.zeros(self.embed_dim)] * max_len
+            length = 0
+            for word in caption:
+                word = word.lower()
+                if self.remove_stop_words and word in eng_stopwords:
+                    continue
+                if word.isalpha() or word.replace("_", "").isalpha():
+                    embed = unknown
+                    if word in self.embedding_dict:
+                        embed = self.embedding_dict[word]
+                    one_hot_caption[length] = embed
+                length += 1
+
+            self.lengths[i] = length
+            self.captions[i] = np.array(one_hot_caption)
+
+        self.captions = np.array(self.captions)
+        self.lengths = np.array(self.lengths)
 
         print("Done!")
