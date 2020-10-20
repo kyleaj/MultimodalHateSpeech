@@ -281,7 +281,8 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
             if length > max_len:
                 max_len = length
 
-        self.embed_dim = len(self.embedding_dict["the"]) # Assuming it has an embedding for "the"...
+        assert "the" in self.embedding_dict  # Assuming it has an embedding for "the"...
+        self.embed_dim = len(self.embedding_dict["the"])
         unknown = np.zeros_like(self.embedding_dict["the"])
         self.lengths = [0] * len(self.captions)
 
