@@ -16,7 +16,7 @@ else:
 
 embed_dir = "glove.twitter.27B." + glove_dim + "d.txt"
 
-train_data = ImFeatureDataLoader_Glove("dev.jsonl", "Resnet152", device, embed_dir)
+train_data = ImFeatureDataLoader_Glove("train.jsonl", "Resnet152", device, embed_dir)
 val_data = ImFeatureDataLoader_Glove("dev.jsonl", "Resnet152", device, embed_dir, embedding_dict=train_data.embedding_dict)
 
 model = LSTM_Concat(512, 2, True, train_data.embed_dim, train_data.image_embed_dim, 512).to(device)
