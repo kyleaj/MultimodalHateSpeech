@@ -5,8 +5,6 @@ import torch
 import os
 import sys
 
-glove_dim = sys.argv[1]
-
 if torch.cuda.is_available():
     device = torch.device("cuda")
     print("Using GPU!")
