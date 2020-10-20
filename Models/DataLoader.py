@@ -198,7 +198,7 @@ class ImFeatureDataLoader_Glove(ImFeatureDataLoader):
             for line in f:
                 line = line.split()
                 word = line[0]
-                embedding = np.array(line[1:])
+                embedding = np.array(line[1:], dtype=float)
                 self.embedding_dict[word] = embedding
             print("Done!")
         else:
