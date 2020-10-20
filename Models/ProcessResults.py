@@ -7,11 +7,12 @@ f = open(results_output, "r")
 max_acc = 0
 epoch = -1
 
+process_line = False
 for i, line in enumerate(f):
     if "Eval acc: " in line:
-        print(line)
-        result = line.split(":")
-        print(result)
+        process_line = True
+    elif process_line:
+        process_line = False
         result = float(result)
         if result > max_acc:
             max_acc = result
