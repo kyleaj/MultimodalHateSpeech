@@ -9,7 +9,9 @@ epoch = -1
 
 for i, line in enumerate(f):
     if "Eval acc: " in line:
-        result = line.split(":")[1]
+        print(line)
+        result = line.split(":")
+        print(result)
         result = float(result)
         if result > max_acc:
             max_acc = result
