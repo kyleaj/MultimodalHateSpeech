@@ -18,7 +18,7 @@ class Trainer:
     def train(self, epochs=100, batch_size=64):
         print("Starting training...")
         num_batches = self.train_data.get_batches_in_epoch(batch_size)
-        f = open(file_name + "_TrainingProgress" + str(time.time()) + ".txt", "w")
+        f = open(self.file_name + "_TrainingProgress" + str(time.time()) + ".txt", "w")
         for e in range(epochs):
             epoch_loss = 0
             epoch_accuracy = 0
