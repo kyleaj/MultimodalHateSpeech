@@ -13,7 +13,7 @@ for i, line in enumerate(f):
         process_line = True
     elif process_line:
         process_line = False
-        result = float(result)
+        result = float(line)
         if result > max_acc:
             max_acc = result
             epoch = i+1
