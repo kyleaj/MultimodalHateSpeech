@@ -204,6 +204,8 @@ class ImFeatureDataLoader_Glove(ImFeatureDataLoader):
         else:
             print("Reusing embedding dictionary")
 
+        eng_stopwords = stopwords.words('english')
+
         print("Post processing text...")
 
         print("Getting max text length")
@@ -215,18 +217,11 @@ class ImFeatureDataLoader_Glove(ImFeatureDataLoader):
                 if self.remove_stop_words and word in eng_stopwords:
                     continue
                 length += 1
-                if word.isalpha() or word.replace("_", "").isalpha():
-                    if word in frequency_count:
-                        frequency_count[word] += 1
-                    else:
-                        frequency_count[word] = 1
             if length > max_len:
                 max_len = length
 
-        eng_stopwords = stopwords.words('english')
-
-        self.embed_dim = len(embedding_dict["the"]) # Assuming it has an embedding for "the"...
-        unknown = np.zeros_like(embedding_dict["the"])
+        self.embed_dim = len(self.embedding_dict["the"]) # Assuming it has an embedding for "the"...
+        unknown = np.zeros_like(self.embedding_dict["the"])
         self.lengths = [0] * len(self.captions)
 
         print("Embedding dimension: " + str(self.embed_dim))
