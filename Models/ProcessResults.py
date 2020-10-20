@@ -8,15 +8,17 @@ max_acc = 0
 epoch = -1
 
 process_line = False
-for i, line in enumerate(f):
+curr_epoch = 0
+for line in f:
     if "Eval acc: " in line:
         process_line = True
+        curr_epoch = curr_epoch + 1
     elif process_line:
         process_line = False
         result = float(line)
         if result > max_acc:
             max_acc = result
-            epoch = i+1
+            epoch = curr_epoch
 
 print("Max evaluation accuracy:")
 print(max_acc)
