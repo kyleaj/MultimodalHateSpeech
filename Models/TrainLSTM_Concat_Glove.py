@@ -24,5 +24,5 @@ model = LSTM_Concat(512, 2, True, train_data.embed_dim, train_data.image_embed_d
 loss = torch.nn.CrossEntropyLoss()
 opt = torch.optim.Adam(params=model.parameters(), lr=1e-3)
 
-trainer = Trainer(model, train_data, val_data, opt, loss)
+trainer = Trainer(model, train_data, val_data, opt, loss, file_name="Glove_" + glove_dim)
 trainer.train()

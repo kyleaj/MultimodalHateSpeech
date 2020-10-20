@@ -4,12 +4,13 @@ import sys
 
 class Trainer:
     
-    def __init__(self, model, train_data, val_data, opt, loss):
+    def __init__(self, model, train_data, val_data, opt, loss, file_name=""):
         self.model = model
         self.train_data = train_data
         self.val_data = val_data
         self.loss_func = loss
         self.optimizer = opt
+        self.file_name = file_name
 
     def accuracy(self, out, labels):
         return (torch.argmax(out, dim=1)==labels).float().mean() * 100
@@ -17,7 +18,7 @@ class Trainer:
     def train(self, epochs=100, batch_size=64):
         print("Starting training...")
         num_batches = self.train_data.get_batches_in_epoch(batch_size)
-        f = open("TrainingProgress" + str(time.time()) + ".txt", "w")
+        f = open(file_name + "_TrainingProgress" + str(time.time()) + ".txt", "w")
         for e in range(epochs):
             epoch_loss = 0
             epoch_accuracy = 0
