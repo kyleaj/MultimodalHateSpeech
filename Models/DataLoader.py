@@ -5,6 +5,7 @@ import numpy as np
 import torch
 import json
 import os
+import gensim
 
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -200,6 +201,66 @@ class ImFeatureDataLoader_Glove(ImFeatureDataLoader):
                 word = line[0]
                 embedding = np.array(line[1:], dtype=float)
                 self.embedding_dict[word] = embedding
+            print("Done!")
+        else:
+            print("Reusing embedding dictionary")
+
+        eng_stopwords = stopwords.words('english')
+
+        print("Post processing text...")
+
+        print("Getting max text length")
+        max_len = -1
+        for caption in self.captions:
+            length = 0
+            for word in caption:
+                word = word.lower()
+                if self.remove_stop_words and word in eng_stopwords:
+                    continue
+                length += 1
+            if length > max_len:
+                max_len = length
+
+        self.embed_dim = len(self.embedding_dict["the"]) # Assuming it has an embedding for "the"...
+        unknown = np.zeros_like(self.embedding_dict["the"])
+        self.lengths = [0] * len(self.captions)
+
+        print("Embedding dimension: " + str(self.embed_dim))
+
+        for i in range(len(self.captions)):
+            caption = self.captions[i]
+            one_hot_caption = [np.zeros(self.embed_dim)] * max_len
+            length = 0
+            for word in caption:
+                word = word.lower()
+                if self.remove_stop_words and word in eng_stopwords:
+                    continue
+                if word.isalpha() or word.replace("_", "").isalpha():
+                    embed = unknown
+                    if word in self.embedding_dict:
+                        embed = self.embedding_dict[word]
+                    one_hot_caption[length] = embed
+                length += 1
+
+            self.lengths[i] = length
+            self.captions[i] = np.array(one_hot_caption)
+
+        self.captions = np.array(self.captions)
+        self.lengths = np.array(self.lengths)
+
+        print("Done!")
+
+class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
+    def __init__(self, path_to_json, image_network, device, embeddings_path, remove_stop_words=True, embedding_dict=None):
+        self.remove_stop_words = remove_stop_words
+        self.embeddings_path = os.path.join("Embeddings", embeddings_path)
+        self.embedding_dict = embedding_dict
+        super().__init__(path_to_json, image_network, device)
+
+    def post_process_text(self):
+        if self.embedding_dict is None:
+            print("Loading embeddings...")
+            self.embedding_dict = gensim.models.KeyedVectors.load_word2vec_format(self.embeddings_path, binary=True)
             print("Done!")
         else:
             print("Reusing embedding dictionary")
