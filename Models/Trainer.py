@@ -1,6 +1,7 @@
 import torch
 import time
 import sys
+import sklearn.metrics
 
 class Trainer:
     
@@ -91,6 +92,12 @@ class Trainer:
                 f.write(str(eval_acc))
                 f.write("\n")
 
+                auroc = self.auroc()
+                f.write("Eval auroc: ")
+                f.write("\n")
+                f.write(str(auroc))
+                f.write("\n")
+
                 print("Eval loss: " + str(eval_loss))
                 print("Eval acc: " + str(eval_acc))
 
@@ -105,3 +112,29 @@ class Trainer:
             sys.stdout.write("\033[F")
             f.write("\n")
             f.write("\n")
+
+    def auroc(self):
+        f = open(self.file_name + "_TrainingProgress" + str(time.time()) + ".txt", "w")
+        with torch.no_grad():
+                #self.model.eval()
+                val_batches = self.val_data.get_batches_in_epoch(16)
+                true_labels = []
+                predictions = []
+
+
+                
+                for b in range(val_batches):
+                    text, ims, labels, lengths = self.val_data.get_batch(16, b)
+                    pred = self.model(text, ims, lengths)
+                    pred = torch.nn.functional.softmax(pred, dim=1)
+
+                    true_labels += labels.tolist()
+
+                    predictions += pred[:, 1].tolist()
+
+                #self.model.train()
+
+                
+                fpr, tpr, _ = sklearn.metrics.roc_curve(y_true = true_labels, y_score = predictions, pos_label = 1)
+                return sklearn.metrics.auc(fpr, tpr)
+                     
