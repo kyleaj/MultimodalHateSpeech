@@ -106,7 +106,7 @@ class Trainer:
                 print("Eval acc: " + str(eval_acc))
 
                 if eval_acc > best_acc or auroc > best_auroc:
-                    model_path = self.file_name + "_model_" + str(eval_acc) + "_" + str(auroc) + ".pt"
+                    model_path = self.file_name + "_model_" + str(e) + "_" + str(eval_acc) + "_" + str(auroc) + ".pt"
                     torch.save(self.model, model_path)
                     best_acc = eval_acc
                     best_auroc = auroc
