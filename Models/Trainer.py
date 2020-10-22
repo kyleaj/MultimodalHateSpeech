@@ -20,6 +20,10 @@ class Trainer:
         print("Starting training...")
         num_batches = self.train_data.get_batches_in_epoch(batch_size)
         f = open(self.file_name + "_TrainingProgress" + str(time.time()) + ".txt", "w")
+
+        best_acc = 0
+        best_auroc = 0
+
         for e in range(epochs):
             epoch_loss = 0
             epoch_accuracy = 0
@@ -100,6 +104,12 @@ class Trainer:
 
                 print("Eval loss: " + str(eval_loss))
                 print("Eval acc: " + str(eval_acc))
+
+                if eval_acc > best_acc or auroc > best_auroc:
+                    model_path = self.file_name + "_model_" + str(eval_acc) + "_" + str(auroc) + ".pt"
+                    torch.save(self.model, model_path)
+                    best_acc = eval_acc
+                    best_auroc = auroc
 
             #self.model.train()
             
