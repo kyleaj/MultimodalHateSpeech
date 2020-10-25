@@ -11,12 +11,21 @@ import os
 image_dir = sys.argv[1]
 out_dir = sys.argv[2]
 
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+    print("Using GPU!")
+else:
+    device = torch.device("cpu")
+    print("Using CPU :(")
+
 # models = ["resnet", "alexnet", "vgg", 
 # "squeezenet", "densenet", "inception"]
 
 model = torch.hub.load('pytorch/vision:v0.6.0', 'resnet152', pretrained=True)
 model.fc = nn.Identity()
 model.eval()
+
+model.to(device)
 
 start_time = time.time()
 
