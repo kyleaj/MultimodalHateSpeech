@@ -35,7 +35,7 @@ im_num = len(ims)
 failed = []
 
 for i, im in enumerate(ims):
-    outpath = os.path.join(out_dir, im)
+    outpath = os.path.join(out_dir, im, ".npy")
     if (os.path.exists(outpath)):
         continue
 
