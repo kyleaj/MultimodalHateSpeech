@@ -38,7 +38,7 @@ remaining = -1
 
 for i, im in enumerate(ims):
     outpath = os.path.join(out_dir, im, ".npy")
-    if (os.path.exists(outpath)):
+    if (os.path.exists(outpath)) or not("jpg" in im.lower() or "png" in im.lower() or "jpeg" in im.lower()):
         continue
 
     filename = os.path.join(image_dir, im)
