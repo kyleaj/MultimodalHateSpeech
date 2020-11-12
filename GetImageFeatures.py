@@ -57,7 +57,7 @@ for i, im in enumerate(ims):
             output = model(input_batch)
 
         output = output[0]
-        output = output.numpy()
+        output = output.cpu().numpy()
         
         np.save(outpath, output)
 
