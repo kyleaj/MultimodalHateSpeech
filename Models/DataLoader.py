@@ -338,7 +338,13 @@ class ImFeatureDataLoader_Flickr(BaseImFeatureDataLoader):
         print("Loading...")
 
         for line in index:
-            im_file, _, text = line.split("|")
+            pieces =  line.split("|")
+            if (len(pieces) != 3):
+                print("Invalid entry:")
+                print(line)
+                continue
+            
+            im_file, _, text = pieces
 
             key = im_file
 
