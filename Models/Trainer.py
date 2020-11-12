@@ -68,48 +68,54 @@ class Trainer:
             print("Avg acc: " + str(avg_acc))
 
             
+            if not (self.val_data is None):
+                with torch.no_grad():
+                    #self.model.eval()
+                    val_batches = self.val_data.get_batches_in_epoch(batch_size)
+                    eval_loss = 0
+                    eval_acc = 0
+                    for b in range(val_batches):
+                        text, ims, labels, lengths = self.val_data.get_batch(batch_size, b)
+                        pred = self.model(text, ims, lengths)
 
-            with torch.no_grad():
-                #self.model.eval()
-                val_batches = self.val_data.get_batches_in_epoch(batch_size)
-                eval_loss = 0
-                eval_acc = 0
-                for b in range(val_batches):
-                    text, ims, labels, lengths = self.val_data.get_batch(batch_size, b)
-                    pred = self.model(text, ims, lengths)
+                        loss = self.loss_func(pred, labels)
+                        eval_loss += loss.item()
 
-                    loss = self.loss_func(pred, labels)
-                    eval_loss += loss.item()
+                        eval_acc += self.accuracy(pred, labels)
 
-                    eval_acc += self.accuracy(pred, labels)
+                    eval_loss = eval_loss  / val_batches
+                    eval_acc = eval_acc / val_batches
+                    eval_acc = eval_acc.item()
 
-                eval_loss = eval_loss  / val_batches
-                eval_acc = eval_acc / val_batches
-                eval_acc = eval_acc.item()
+                    f.write("Eval loss: ")
+                    f.write("\n")
+                    f.write(str(eval_loss))  
+                    f.write("\n")    
+                    f.write("Eval acc: ")
+                    f.write("\n")
+                    f.write(str(eval_acc))
+                    f.write("\n")
 
-                f.write("Eval loss: ")
-                f.write("\n")
-                f.write(str(eval_loss))  
-                f.write("\n")    
-                f.write("Eval acc: ")
-                f.write("\n")
-                f.write(str(eval_acc))
-                f.write("\n")
+                    auroc = self.auroc()
+                    f.write("Eval auroc: ")
+                    f.write("\n")
+                    f.write(str(auroc))
+                    f.write("\n")
 
-                auroc = self.auroc()
-                f.write("Eval auroc: ")
-                f.write("\n")
-                f.write(str(auroc))
-                f.write("\n")
+                    print("Eval loss: " + str(eval_loss))
+                    print("Eval acc: " + str(eval_acc))
 
-                print("Eval loss: " + str(eval_loss))
-                print("Eval acc: " + str(eval_acc))
-
-                if eval_acc > best_acc or auroc > best_auroc:
-                    model_path = self.file_name + "_model_" + str(e) + "_" + str(eval_acc) + "_" + str(auroc) + ".pt"
-                    torch.save(self.model, model_path)
-                    best_acc = eval_acc
-                    best_auroc = auroc
+                    if eval_acc > best_acc or auroc > best_auroc:
+                        model_path = self.file_name + "_model_" + str(e) + "_" + str(eval_acc) + "_" + str(auroc) + ".pt"
+                        torch.save(self.model, model_path)
+                        best_acc = eval_acc
+                        best_auroc = auroc
+            else:
+                print("No eval data! >:(")
+                if avg_acc > best_acc:
+                        model_path = self.file_name + "_model_" + str(e) + "_" + str(eval_acc) + ".pt"
+                        torch.save(self.model, model_path)
+                        best_acc = eval_acc
 
             #self.model.train()
             
@@ -124,6 +130,9 @@ class Trainer:
             f.write("\n")
 
     def auroc(self):
+        if (self.val_data is None):
+            return -1
+        
         f = open(self.file_name + "_TrainingProgress" + str(time.time()) + ".txt", "w")
         with torch.no_grad():
                 #self.model.eval()

@@ -404,11 +404,11 @@ class ImFeatureDataLoader_Flickr(BaseImFeatureDataLoader):
         return text, ims, labels, lengths
 
 class ImFeatureDataLoader_Flickr_Word2Vec(ImFeatureDataLoader_Flickr):
-    def __init__(self, path_to_csv, image_network, device, embeddings_path, remove_stop_words=True, embedding_dict=None):
+    def __init__(self, path_to_csv, path_to_ims, device, embeddings_path, remove_stop_words=True, embedding_dict=None):
         self.remove_stop_words = remove_stop_words
         self.embeddings_path = os.path.join("Embeddings", embeddings_path)
         self.embedding_dict = embedding_dict
-        super().__init__(path_to_csv, image_network, device)
+        super().__init__(path_to_csv, path_to_ims, device)
 
     def post_process_text(self):
         if self.embedding_dict is None:
