@@ -113,9 +113,9 @@ class Trainer:
             else:
                 print("No eval data! >:(")
                 if avg_acc > best_acc:
-                        model_path = self.file_name + "_model_" + str(e) + "_" + str(eval_acc) + ".pt"
+                        model_path = self.file_name + "_model_" + str(e) + "_" + str(avg_acc) + ".pt"
                         torch.save(self.model, model_path)
-                        best_acc = eval_acc
+                        best_acc = avg_acc
 
             #self.model.train()
             
