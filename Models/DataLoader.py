@@ -14,9 +14,59 @@ BOS = "__BEGINNING_OF_SENTENCE__"
 EOS = "__END_OF_SENTENCE__"
 UNK = "__UNKNOWN__"
 
-class ImFeatureDataLoader:
+class BaseImFeatureDataLoader:
+
+    def __init__(self):
+        self.ims = None
+        self.captions = None
+        self.labels = None
+        self.order = None
+        self.lengths = None
+        self.device = None
+
+    def post_process_images(self):
+        self.ims = np.array(self.ims)
+
+    def post_process_text(self):
+        self.captions = np.array(self.captions)
+
+    def post_process_labels(self):
+        self.labels = np.array(self.labels)
+
+    def get_batches_in_epoch(self, batch_size):
+        return (len(self.order) + 1) // batch_size
+
+    def shuffle(self):
+        self.order = np.random.permutation(len(self.order))
+
+    def get_batch(self, batch_size, batch_num):
+        start = batch_num * batch_size
+        end = (batch_num + 1) * batch_size
+
+        indices = self.order[start:end]
+
+        ims = self.ims[indices]
+        ims = torch.Tensor(ims).to(self.device)
+
+        text = self.captions[indices]
+        text = torch.Tensor(text).to(self.device)
+
+        labels = self.labels[indices]
+        labels = torch.Tensor(labels).to(self.device).long()
+
+        lengths = self.lengths[indices]
+        lengths = torch.Tensor(lengths).to(self.device).long()
+
+        return text, ims, labels, lengths
+
+    def get(self):
+        return self.get_batch(len(self.order), 0)
+
+class ImFeatureDataLoader(BaseImFeatureDataLoader):
 
     def __init__(self, path_to_json, image_network, device):
+        super().__init__()
+
         self.ims = []
         self.captions = []
         self.labels = []
@@ -57,44 +107,6 @@ class ImFeatureDataLoader:
         self.post_process_images()
         self.post_process_labels()
         self.post_process_text()
-
-    def post_process_images(self):
-        self.ims = np.array(self.ims)
-
-    def post_process_text(self):
-        self.captions = np.array(self.captions)
-
-    def post_process_labels(self):
-        self.labels = np.array(self.labels)
-
-    def get_batches_in_epoch(self, batch_size):
-        return (len(self.order) + 1) // batch_size
-
-    def shuffle(self):
-        self.order = np.random.permutation(len(self.order))
-
-    def get_batch(self, batch_size, batch_num):
-        start = batch_num * batch_size
-        end = (batch_num + 1) * batch_size
-
-        indices = self.order[start:end]
-
-        ims = self.ims[indices]
-        ims = torch.Tensor(ims).to(self.device)
-
-        text = self.captions[indices]
-        text = torch.Tensor(text).to(self.device)
-
-        labels = self.labels[indices]
-        labels = torch.Tensor(labels).to(self.device).long()
-
-        lengths = self.lengths[indices]
-        lengths = torch.Tensor(lengths).to(self.device).long()
-
-        return text, ims, labels, lengths
-
-    def get(self):
-        return self.get_batch(len(self.order), 0)
 
 
 class ImFeatureDataLoader_OneHotEmbed(ImFeatureDataLoader):
@@ -308,5 +320,143 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
 
         self.captions = np.array(self.captions)
         self.lengths = np.array(self.lengths)
+
+        print("Done!")
+
+class ImFeatureDataLoader_Flickr(BaseImFeatureDataLoader):
+    def __init__(self, path_to_csv, path_to_ims, device):
+        super().__init__()
+
+        self.ims = {}
+        self.im_keys = []
+        self.captions = []
+        self.order = []
+        self.lengths = None
+        self.device = device
+
+        index = open(path_to_csv, "r")
+        print("Loading...")
+
+        for line in index:
+            im_file, _, text = line.split("|")
+
+            key = im_file
+
+            im_features = im_file + ".npy"
+            im_features = os.path.join(path_to_ims, im_features)
+
+            if key not in self.ims:
+                if not os.path.exists(im_features):
+                    print("Couldn't find " + str(im_features))
+                    print(im_features)
+                    continue
+                im_features = np.load(im_features)
+                self.ims[key] = im_features
+                self.im_keys.append(key)
+
+            text = word_tokenize(text)
+            text = [BOS] + text + [EOS]
+            self.captions.append((key, text))
+
+        self.order = np.random.permutation(len(self.captions))
+
+        self.image_embed_dim = self.ims[0].shape[0]
+        
+        print("Done!")
+
+        self.post_process_text()
+
+    def get_batch(self, batch_size, batch_num):
+        start = batch_num * batch_size
+        end = (batch_num + 1) * batch_size
+
+        indices = self.order[start:end]
+
+        text = []
+        ims = []
+        labels = []
+        lengths = []
+
+        for index, (key, caption) in zip(indices, self.captions[indices]):
+            text.append(caption)
+            ims.append(self.ims[key])
+            labels.append(1)
+            lengths.append(self.lengths[index])
+
+        for key, caption in self.captions[indices]:
+            text.append(caption)
+            new_key = key
+            new_index = -1
+            while new_key != key:
+                new_index = np.random.randint(0, len(self.im_keys))
+                new_key = self.im_keys[new_index]
+            
+            ims.append(self.ims[new_key])
+            labels.append(0)
+            lengths.append(self.lengths[new_index])
+
+
+        ims = torch.Tensor(ims).to(self.device)
+        text = torch.Tensor(text).to(self.device)
+        labels = torch.Tensor(labels).to(self.device).long()
+        lengths = torch.Tensor(lengths).to(self.device).long()
+
+        return text, ims, labels, lengths
+
+class ImFeatureDataLoader_Flickr_Word2Vec(ImFeatureDataLoader_Flickr):
+    def __init__(self, path_to_csv, image_network, device, embeddings_path, remove_stop_words=True, embedding_dict=None):
+        self.remove_stop_words = remove_stop_words
+        self.embeddings_path = os.path.join("Embeddings", embeddings_path)
+        self.embedding_dict = embedding_dict
+        super().__init__(path_to_csv, image_network, device)
+
+    def post_process_text(self):
+        if self.embedding_dict is None:
+            print("Loading embeddings...")
+            self.embedding_dict = gensim.models.KeyedVectors.load_word2vec_format(self.embeddings_path, binary=True)
+            print("Done!")
+        else:
+            print("Reusing embedding dictionary")
+
+        eng_stopwords = stopwords.words('english')
+
+        print("Post processing text...")
+
+        print("Getting max text length")
+        max_len = -1
+        for key, caption in self.captions:
+            length = 0
+            for word in caption:
+                word = word.lower()
+                if self.remove_stop_words and word in eng_stopwords:
+                    continue
+                length += 1
+            if length > max_len:
+                max_len = length
+
+        assert "the" in self.embedding_dict  # Assuming it has an embedding for "the"...
+        self.embed_dim = len(self.embedding_dict["the"])
+        unknown = np.zeros_like(self.embedding_dict["the"])
+        self.lengths = [0] * len(self.captions)
+
+        print("Embedding dimension: " + str(self.embed_dim))
+
+        for i in range(len(self.captions)):
+            key, caption = self.captions[i]
+            one_hot_caption = [np.zeros(self.embed_dim)] * max_len
+            length = 0
+            for word in caption:
+                word = word.lower()
+                if self.remove_stop_words and word in eng_stopwords:
+                    continue
+                if word.isalpha() or word.replace("_", "").isalpha():
+                    embed = unknown
+                    if word in self.embedding_dict:
+                        embed = self.embedding_dict[word]
+                    one_hot_caption[length] = embed
+                length += 1
+
+            self.lengths[i] = length
+            self.captions[i] = (key, np.array(one_hot_caption))
 
         print("Done!")
