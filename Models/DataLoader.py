@@ -343,7 +343,7 @@ class ImFeatureDataLoader_Flickr(BaseImFeatureDataLoader):
                 print("Invalid entry:")
                 print(line)
                 continue
-            
+
             im_file, _, text = pieces
 
             key = im_file
@@ -366,7 +366,7 @@ class ImFeatureDataLoader_Flickr(BaseImFeatureDataLoader):
 
         self.order = np.random.permutation(len(self.captions))
 
-        self.image_embed_dim = self.ims[0].shape[0]
+        self.image_embed_dim = self.ims[self.im_keys[0]].shape[0]
         
         print("Done!")
 
