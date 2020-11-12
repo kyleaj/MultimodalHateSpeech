@@ -22,4 +22,4 @@ loss = torch.nn.CrossEntropyLoss()
 opt = torch.optim.Adam(params=model.parameters(), lr=1e-3)
 
 trainer = Trainer(model, train_data, None, opt, loss, file_name="Word2Vec")
-trainer.train()
+trainer.train(epochs=25)

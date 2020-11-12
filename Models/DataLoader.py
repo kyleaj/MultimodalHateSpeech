@@ -383,13 +383,15 @@ class ImFeatureDataLoader_Flickr(BaseImFeatureDataLoader):
         labels = []
         lengths = []
 
-        for index, (key, caption) in zip(indices, self.captions[indices]):
+        for index in indices:
+            key, caption = self.captions[index]
             text.append(caption)
             ims.append(self.ims[key])
             labels.append(1)
             lengths.append(self.lengths[index])
 
-        for key, caption in self.captions[indices]:
+        for index in indices:
+            key, caption = self.captions[index]
             text.append(caption)
             new_key = key
             new_index = -1
@@ -406,6 +408,14 @@ class ImFeatureDataLoader_Flickr(BaseImFeatureDataLoader):
         text = torch.Tensor(text).to(self.device)
         labels = torch.Tensor(labels).to(self.device).long()
         lengths = torch.Tensor(lengths).to(self.device).long()
+
+        shuffle = torch.randperm(len(indices))
+
+        ims = ims[shuffle]
+        text = text[shuffle]
+        labels = labels[shuffle]
+        lengths = lengths[shuffle]
+
 
         return text, ims, labels, lengths
 
