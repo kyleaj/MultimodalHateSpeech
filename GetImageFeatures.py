@@ -37,7 +37,7 @@ failed = []
 remaining = -1
 
 for i, im in enumerate(ims):
-    outpath = os.path.join(out_dir, im, ".npy")
+    outpath = os.path.join(out_dir, im + ".npy")
     if (os.path.exists(outpath)) or not("jpg" in im.lower() or "png" in im.lower() or "jpeg" in im.lower()):
         continue
 
@@ -65,13 +65,14 @@ for i, im in enumerate(ims):
         speed = (i+1) / elapsed
         remaining = (im_num - i - 1) / speed
         remaining = int(remaining * 100) / 100.0
-    except:
+    except Exception as e:
+        failed.append(e)
         failed.append(im)
 
     print(str(i+1) + " / " + str(im_num) + ", about " + str(remaining) + "s left.")
     sys.stdout.write("\033[F") # Cursor up one line
 
-print("Num failed: " + str(len(failed)))
+print("Num failed: " + str(len(failed)/2))
 f = open(os.path.join(out_dir, "failures"), "w")
 for fail in failed:
     f.write(str(fail))
