@@ -17,7 +17,17 @@ embed_dir = "/tigress/kyleaj/Thesis/Embeddings/GoogleNews-vectors-negative300.bi
 train_data = ImFeatureDataLoader_Word2Vec("train.jsonl", "Resnet152", device, embed_dir)
 val_data = ImFeatureDataLoader_Word2Vec("dev.jsonl", "Resnet152", device, embed_dir, embedding_dict=train_data.embedding_dict)
 
-model = LSTM_Concat(512, 2, True, train_data.embed_dim, train_data.image_embed_dim, 512).to(device)
+model = None
+
+if len(sys.argv) == 2:
+    print("Loading pretrained model...")
+    model = torch.load(sys.argv[1])
+    for param in model.LSTM.parameters():
+        param.requires_grad = False
+    for param in model.decoder.parameters():
+        param.requires_grad = False
+else:
+    model = LSTM_Concat(512, 2, True, train_data.embed_dim, train_data.image_embed_dim, 512).to(device)
 
 loss = torch.nn.CrossEntropyLoss()
 opt = torch.optim.Adam(params=model.parameters(), lr=1e-3)
