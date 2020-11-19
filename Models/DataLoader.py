@@ -391,17 +391,28 @@ class ImFeatureDataLoader_Flickr(BaseImFeatureDataLoader):
             lengths.append(self.lengths[index])
 
         for index in indices:
-            key, caption = self.captions[index]
-            text.append(caption)
-            new_key = key
-            new_index = -1
-            while new_key != key:
-                new_index = np.random.randint(0, len(self.im_keys))
-                new_key = self.im_keys[new_index]
-            
-            ims.append(self.ims[new_key])
-            labels.append(0)
-            lengths.append(self.lengths[new_index])
+            if np.random.randint(0, 2) == 1:
+                key, caption = self.captions[index]
+                text.append(caption)
+                new_key = key
+                new_index = -1
+                while new_key != key:
+                    new_index = np.random.randint(0, len(self.im_keys))
+                    new_key = self.im_keys[new_index]
+                
+                ims.append(self.ims[new_key])
+                labels.append(0)
+                lengths.append(self.lengths[new_index])
+            else:
+                key, _ = self.captions[index]
+                ims.append(self.ims[key])
+                new_index = index
+                while new_index != index:
+                    new_index = np.random.randint(0, len(self.im_keys))
+                labels.append(0)
+                lengths.append(self.lengths[new_index])
+                _, caption = self.captions[new_index]
+                text.append(caption)
 
 
         ims = torch.Tensor(ims).to(self.device)
