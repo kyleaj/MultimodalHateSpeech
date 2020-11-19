@@ -16,7 +16,7 @@ embed_dir = "/tigress/kyleaj/Thesis/Embeddings/GoogleNews-vectors-negative300.bi
 
 train_data = ImFeatureDataLoader_Flickr_Word2Vec("/tigress/kyleaj/Thesis/flickr30k_images/results.csv", "/tigress/kyleaj/Thesis/flickr30k_images/flickr30k_images", device, embed_dir)
 
-model = LSTM_Concat(512, 2, True, train_data.embed_dim, train_data.image_embed_dim, 512).to(device)
+model = LSTM_Concat(512, 2, True, train_data.embed_dim, train_data.image_embed_dim, 512, lstm_dropout=0.4).to(device)
 
 loss = torch.nn.CrossEntropyLoss()
 opt = torch.optim.Adam(params=model.parameters(), lr=1e-3)
