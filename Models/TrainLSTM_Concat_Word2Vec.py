@@ -24,8 +24,8 @@ if len(sys.argv) == 2:
     model = torch.load(sys.argv[1])
     for param in model.LSTM.parameters():
         param.requires_grad = False
-    for param in model.decoder.parameters():
-        param.requires_grad = False
+    #for param in model.decoder.parameters():
+    #    param.requires_grad = False
 else:
     model = LSTM_Concat(512, 2, True, train_data.embed_dim, train_data.image_embed_dim, 512).to(device)
 
