@@ -18,7 +18,8 @@ class LSTM_Concat(torch.nn.Module):
         if (LSTM_bidirectional):
             lstm_out *= 2
 
-        self.decoder = torch.nn.Linear(in_features=lstm_out, out_features=decoder_dim, dropout=decoder_dropout)
+        self.decoder = torch.nn.Linear(in_features=lstm_out, out_features=decoder_dim)
+        self.decoder = torch.nn.Dropout(p=decoder_dropout)(self.decoder)
         self.classifier = torch.nn.Linear(in_features=decoder_dim, out_features=num_classes)
 
     def forward(self, text, image, lengths):
