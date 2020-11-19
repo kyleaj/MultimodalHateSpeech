@@ -420,7 +420,7 @@ class ImFeatureDataLoader_Flickr(BaseImFeatureDataLoader):
         labels = torch.Tensor(labels).to(self.device).long()
         lengths = torch.Tensor(lengths).to(self.device).long()
 
-        shuffle = torch.randperm(len(indices))
+        shuffle = torch.randperm(len(indices)*2)
 
         ims = ims[shuffle]
         text = text[shuffle]
