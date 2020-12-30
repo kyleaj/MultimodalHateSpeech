@@ -34,7 +34,7 @@ elif len(sys.argv) == 5:
     dropout = float(sys.argv[3])
     file_name = sys.argv[4]
     model = LSTM_Concat(lstm_dim, 2, True, train_data.embed_dim, 
-                train_data.image_embed_dim, decoder_dim, dropout=dropout).to(device)
+                train_data.image_embed_dim, decoder_dim, lstm_dropout=dropout).to(device)
 else:
     model = LSTM_Concat(512, 2, True, train_data.embed_dim, train_data.image_embed_dim, 512).to(device)
 
