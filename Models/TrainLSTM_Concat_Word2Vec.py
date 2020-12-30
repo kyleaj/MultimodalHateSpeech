@@ -87,3 +87,6 @@ def main():
         param_sweep()
     else:
         prepare_train()
+
+if __name__ == "__main__":
+    main()
