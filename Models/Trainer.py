@@ -128,6 +128,8 @@ class Trainer:
             sys.stdout.write("\033[F")
             f.write("\n")
             f.write("\n")
+        
+        return (best_acc, best_auroc)
 
     def auroc(self):
         if (self.val_data is None):
