@@ -3,7 +3,7 @@ from compact_bilinear_pooling import CountSketch, CompactBilinearPooling
 
 class MCB_Late_Fusion(torch.nn.Module):
 
-    def __init__(self, LSTM_dim, LSTM_cell_num, LSTM_bidirectional, text_embed_dim, image_embed_dim, decoder_dim, num_classes=2):
+    def __init__(self, LSTM_dim, LSTM_cell_num, LSTM_bidirectional, text_embed_dim, image_embed_dim, decoder_dim, num_classes=2, lstm_dropout=0):
         super().__init__()
 
         self.LSTM = torch.nn.LSTM(
@@ -11,7 +11,8 @@ class MCB_Late_Fusion(torch.nn.Module):
             hidden_size=LSTM_dim,
             num_layers=LSTM_cell_num,
             bidirectional=LSTM_bidirectional,
-            batch_first=True)
+            batch_first=True,
+            dropout=lstm_dropout)
 
         lstm_out = LSTM_dim
         if (LSTM_bidirectional):
