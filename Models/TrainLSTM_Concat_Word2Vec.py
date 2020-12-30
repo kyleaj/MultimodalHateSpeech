@@ -26,6 +26,12 @@ if len(sys.argv) == 2:
         param.requires_grad = False
     #for param in model.decoder.parameters():
     #    param.requires_grad = False
+elif len(sys.argv == 4):
+    lstm_dim = int(sys.argv[1])
+    decoder_dim = int(sys.argv[1])
+    dropout = float(sys.argv[1])
+    model = LSTM_Concat(lstm_dim, 2, True, train_data.embed_dim, 
+                train_data.image_embed_dim, decoder_dim, dropout=dropout).to(device)
 else:
     model = LSTM_Concat(512, 2, True, train_data.embed_dim, train_data.image_embed_dim, 512).to(device)
 
