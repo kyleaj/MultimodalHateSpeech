@@ -19,6 +19,8 @@ val_data = ImFeatureDataLoader_Word2Vec("dev.jsonl", "Resnet152", device, embed_
 
 model = None
 
+file_name="Word2Vec"
+
 if len(sys.argv) == 2:
     print("Loading pretrained model...")
     model = torch.load(sys.argv[1])
@@ -26,10 +28,11 @@ if len(sys.argv) == 2:
         param.requires_grad = False
     #for param in model.decoder.parameters():
     #    param.requires_grad = False
-elif len(sys.argv == 4):
+elif len(sys.argv == 5):
     lstm_dim = int(sys.argv[1])
-    decoder_dim = int(sys.argv[1])
-    dropout = float(sys.argv[1])
+    decoder_dim = int(sys.argv[2])
+    dropout = float(sys.argv[3])
+    file_name = sys.argv[4]
     model = LSTM_Concat(lstm_dim, 2, True, train_data.embed_dim, 
                 train_data.image_embed_dim, decoder_dim, dropout=dropout).to(device)
 else:
@@ -38,5 +41,5 @@ else:
 loss = torch.nn.CrossEntropyLoss()
 opt = torch.optim.Adam(params=model.parameters(), lr=1e-3)
 
-trainer = Trainer(model, train_data, val_data, opt, loss, file_name="Word2Vec")
+trainer = Trainer(model, train_data, val_data, opt, loss, file_name=file_name)
 trainer.train()
