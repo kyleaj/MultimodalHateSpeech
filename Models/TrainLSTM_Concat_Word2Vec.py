@@ -28,7 +28,7 @@ if len(sys.argv) == 2:
         param.requires_grad = False
     #for param in model.decoder.parameters():
     #    param.requires_grad = False
-elif len(sys.argv == 5):
+elif len(sys.argv) == 5:
     lstm_dim = int(sys.argv[1])
     decoder_dim = int(sys.argv[2])
     dropout = float(sys.argv[3])
