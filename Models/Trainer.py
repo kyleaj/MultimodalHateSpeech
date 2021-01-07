@@ -5,13 +5,14 @@ import sklearn.metrics
 
 class Trainer:
     
-    def __init__(self, model, train_data, val_data, opt, loss, file_name=""):
+    def __init__(self, model, train_data, val_data, opt, loss, file_name="", save_data=True):
         self.model = model
         self.train_data = train_data
         self.val_data = val_data
         self.loss_func = loss
         self.optimizer = opt
         self.file_name = file_name
+        self.save_data = save_data
 
     def accuracy(self, out, labels):
         return (torch.argmax(out, dim=1)==labels).float().mean() * 100
@@ -19,7 +20,10 @@ class Trainer:
     def train(self, epochs=100, batch_size=64):
         print("Starting training...")
         num_batches = self.train_data.get_batches_in_epoch(batch_size)
-        f = open(self.file_name + "_TrainingProgress" + str(time.time()) + ".txt", "w")
+        if self.save_data:
+            f = open(self.file_name + "_TrainingProgress" + str(time.time()) + ".txt", "w")
+        else:
+            f = None
 
         best_acc = 0
         best_auroc = 0
@@ -49,23 +53,24 @@ class Trainer:
                 epoch_loss += loss.item()
                 epoch_accuracy += accuracy
             
-            print("Epoch complete!")
-            f.write(str(e))
-            f.write("\n")
+            if self.save_data:
+                print("Epoch complete!")
+                f.write(str(e))
+                f.write("\n")
 
-            avg_loss = epoch_loss / num_batches
-            f.write("Train loss: ")
-            f.write("\n")
-            f.write(str(avg_loss))
-            f.write("\n")
-            print("Avg loss: " + str(avg_loss))
+                avg_loss = epoch_loss / num_batches
+                f.write("Train loss: ")
+                f.write("\n")
+                f.write(str(avg_loss))
+                f.write("\n")
+                print("Avg loss: " + str(avg_loss))
 
-            avg_acc = epoch_accuracy / num_batches
-            f.write("Train acc: ")
-            f.write("\n")
-            f.write(str(avg_acc))
-            f.write("\n")
-            print("Avg acc: " + str(avg_acc))
+                avg_acc = epoch_accuracy / num_batches
+                f.write("Train acc: ")
+                f.write("\n")
+                f.write(str(avg_acc))
+                f.write("\n")
+                print("Avg acc: " + str(avg_acc))
 
             
             if not (self.val_data is None):
@@ -87,32 +92,37 @@ class Trainer:
                     eval_acc = eval_acc / val_batches
                     eval_acc = eval_acc.item()
 
-                    f.write("Eval loss: ")
-                    f.write("\n")
-                    f.write(str(eval_loss))  
-                    f.write("\n")    
-                    f.write("Eval acc: ")
-                    f.write("\n")
-                    f.write(str(eval_acc))
-                    f.write("\n")
+                    if self.save_data:
+                        f.write("Eval loss: ")
+                        f.write("\n")
+                        f.write(str(eval_loss))  
+                        f.write("\n")    
+                        f.write("Eval acc: ")
+                        f.write("\n")
+                        f.write(str(eval_acc))
+                        f.write("\n")
 
                     auroc = self.auroc()
-                    f.write("Eval auroc: ")
-                    f.write("\n")
-                    f.write(str(auroc))
-                    f.write("\n")
+
+                    if self.save_data:
+                        f.write("Eval auroc: ")
+                        f.write("\n")
+                        f.write(str(auroc))
+                        f.write("\n")
 
                     print("Eval loss: " + str(eval_loss))
                     print("Eval acc: " + str(eval_acc))
 
                     if eval_acc > best_acc or auroc > best_auroc:
-                        model_path = self.file_name + "_model_" + str(e) + "_" + str(eval_acc) + "_" + str(auroc) + ".pt"
-                        torch.save(self.model, model_path)
+                        if self.save_data:
+                            model_path = self.file_name + "_model_" + str(e) + "_" + str(eval_acc) + "_" + str(auroc) + ".pt"
+                            torch.save(self.model, model_path)
                         best_acc = eval_acc
                         best_auroc = auroc
             else:
                 print("No eval data! >:(")
                 if avg_acc > best_acc:
+                    if self.save_data:
                         model_path = self.file_name + "_model_" + str(e) + "_" + str(avg_acc) + ".pt"
                         torch.save(self.model, model_path)
                         best_acc = avg_acc
@@ -121,13 +131,14 @@ class Trainer:
             
             self.train_data.shuffle()
 
-            sys.stdout.write("\033[F")
-            sys.stdout.write("\033[F")
-            sys.stdout.write("\033[F")
-            sys.stdout.write("\033[F")
-            sys.stdout.write("\033[F")
-            f.write("\n")
-            f.write("\n")
+            if self.save_data:
+                sys.stdout.write("\033[F")
+                sys.stdout.write("\033[F")
+                sys.stdout.write("\033[F")
+                sys.stdout.write("\033[F")
+                sys.stdout.write("\033[F")
+                f.write("\n")
+                f.write("\n")
         
         return (best_acc, best_auroc)
 

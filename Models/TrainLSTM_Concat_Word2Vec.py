@@ -17,11 +17,11 @@ embed_dir = "/tigress/kyleaj/Thesis/Embeddings/GoogleNews-vectors-negative300.bi
 train_data = ImFeatureDataLoader_Word2Vec("train.jsonl", "Resnet152", device, embed_dir)
 val_data = ImFeatureDataLoader_Word2Vec("dev.jsonl", "Resnet152", device, embed_dir, embedding_dict=train_data.embedding_dict)
 
-def train(train_data, val_data, model, file_name, lr=1e-3):
+def train(train_data, val_data, model, file_name, lr=1e-3, write=True):
     loss = torch.nn.CrossEntropyLoss()
     opt = torch.optim.Adam(params=model.parameters(), lr=lr)
 
-    trainer = Trainer(model, train_data, val_data, opt, loss, file_name=file_name)
+    trainer = Trainer(model, train_data, val_data, opt, loss, file_name=file_name, save_data=write)
     return trainer.train()
 
 def prepare_train():
@@ -47,9 +47,10 @@ def prepare_train():
     train(train_data, val_data, model, file_name)
 
 def param_sweep():
-    dims = [64, 128, 256, 512, 1024, 2048]
-    dropouts = [0, 0.2, 0.4, 0.6, 0.8]
-    lrs = [1e-4, 5e-4, 1e-3, 5e-3]
+    lstm_dims = [64, 128, 256, 512, 1024] # 5
+    decoder_dims = [64, 128, 256, 512] # 4
+    dropouts = [0, 0.4, 0.6] # 3 / 5 [0, 0.2, 0.4, 0.6, 0.8]
+    lrs = [1e-4, 5e-4, 1e-3, 5e-3] # 4
 
     best_params_acc = None
     best_params_auroc = None
@@ -57,24 +58,36 @@ def param_sweep():
     best_acc = -1
     best_auroc = -1
 
-    for lstm_dim in dims:
-        for decoder_dim in dims:
+    results = []
+
+    for lstm_dim in lstm_dims:
+        for decoder_dim in decoder_dims:
             for dropout in dropouts:
                 for lr in lrs:
                     file_name = "Paramsweep_lstmconcat_" + str(lstm_dim) + "_" + str(decoder_dim) + "_" + str(dropout) + "_" + str(lr)
                     model = LSTM_Concat(lstm_dim, 2, True, train_data.embed_dim, 
                         train_data.image_embed_dim, decoder_dim, lstm_dropout=dropout).to(device)
-                    acc, auroc = train(train_data, val_data, model, file_name, lr=lr)
+                    acc, auroc = train(train_data, val_data, model, file_name, lr=lr, write=False)
                     if acc > best_acc:
                         best_acc = acc
                         best_params_acc = (lstm_dim, decoder_dim, dropout, lr)
                     if auroc > best_auroc:
                         best_auroc = auroc
                         best_params_auroc = (lstm_dim, decoder_dim, dropout, lr)
+
+                    results.append((lstm_dim, decoder_dim, dropout, lr, acc, auroc))
     
     for _ in range(10):
         print("~~~~~~~")
+
     print()
+    print()
+    print("Full Results: ")
+
+    print()
+    print()
+    print()
+
     print("Best acc:")
     print(best_acc)
     print(best_params_acc)
