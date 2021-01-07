@@ -83,6 +83,9 @@ def param_sweep():
     print()
     print()
     print("Full Results: ")
+    for res in results:
+        print(res)
+        print()
 
     print()
     print()
