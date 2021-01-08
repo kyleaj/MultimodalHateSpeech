@@ -19,7 +19,7 @@ val_data = ImFeatureDataLoader_Word2Vec("dev.jsonl", "Resnet152", device, embed_
 
 def train(train_data, val_data, model, file_name, lr=1e-3, write=True):
     loss = torch.nn.CrossEntropyLoss()
-    opt = torch.optim.Adam(params=model.parameters(), lr=lr)
+    opt = torch.optim.Adam(params=model.parameters(), lr=lr, weight_decay=1e-2)
 
     trainer = Trainer(model, train_data, val_data, opt, loss, file_name=file_name, save_data=write)
     return trainer.train()
@@ -42,7 +42,7 @@ def prepare_train():
         model = LSTM_Concat(lstm_dim, 2, True, train_data.embed_dim, 
                     train_data.image_embed_dim, decoder_dim, lstm_dropout=dropout).to(device)
     else:
-        model = LSTM_Concat(512, 2, True, train_data.embed_dim, train_data.image_embed_dim, 512).to(device)
+        model = LSTM_Concat(512, 2, True, train_data.embed_dim, train_data.image_embed_dim, 256).to(device)
 
     train(train_data, val_data, model, file_name)
 
