@@ -510,7 +510,7 @@ class ImFeatureDataLoader_Coco(BaseImFeatureDataLoader):
 
                 key = im_id
 
-                im_features = path_to_ims + im_id + ".jpg.npy"
+                im_features = path_to_ims + str(im_id) + ".jpg.npy"
                 im_features = os.path.join(path_to_ims, im_features)
 
                 if key not in self.ims:
