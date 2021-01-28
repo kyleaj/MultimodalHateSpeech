@@ -320,8 +320,11 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                         embed = self.embedding_dict[word]
                         if self.add_cap_feat:
                             print(embed)
+                            print(type(embed))
+                            print(len(embed))
                             embed = embed + [self.get_capitalization_feature(word_orig)]
                             print(embed)
+                            print(len(embed))
                             exit(0)
                     one_hot_caption[length] = embed
                 length += 1
