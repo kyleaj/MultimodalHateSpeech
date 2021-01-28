@@ -39,6 +39,9 @@ class BaseImFeatureDataLoader:
     def shuffle(self):
         self.order = np.random.permutation(len(self.order))
 
+    def get_capitalization_feature(self, word):
+        return (sum(1 for c in word if c.isupper()))/len(word)
+
     def get_batch(self, batch_size, batch_num):
         start = batch_num * batch_size
         end = (batch_num + 1) * batch_size
@@ -263,10 +266,11 @@ class ImFeatureDataLoader_Glove(ImFeatureDataLoader):
         print("Done!")
 
 class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
-    def __init__(self, path_to_json, image_network, device, embeddings_path, remove_stop_words=True, embedding_dict=None):
+    def __init__(self, path_to_json, image_network, device, embeddings_path, remove_stop_words=True, embedding_dict=None, add_cap_feat=True):
         self.remove_stop_words = remove_stop_words
         self.embeddings_path = os.path.join("Embeddings", embeddings_path)
         self.embedding_dict = embedding_dict
+        self.add_cap_feat = add_cap_feat
         super().__init__(path_to_json, image_network, device)
 
     def post_process_text(self):
@@ -294,7 +298,7 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                 max_len = length
 
         assert "the" in self.embedding_dict  # Assuming it has an embedding for "the"...
-        self.embed_dim = len(self.embedding_dict["the"])
+        self.embed_dim = len(self.embedding_dict["the"]) + (1 if self.add_cap_feat else 0)
         unknown = np.zeros_like(self.embedding_dict["the"])
         self.lengths = [0] * len(self.captions)
 
@@ -305,6 +309,7 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
             one_hot_caption = [np.zeros(self.embed_dim)] * max_len
             length = 0
             for word in caption:
+                word_orig = word
                 word = word.lower()
                 if self.remove_stop_words and word in eng_stopwords:
                     continue
@@ -312,6 +317,8 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                     embed = unknown
                     if word in self.embedding_dict:
                         embed = self.embedding_dict[word]
+                        if self.add_cap_feat:
+                            embed = np.append(embed, self.get_capitalization_feature(word_orig))
                     one_hot_caption[length] = embed
                 length += 1
 
