@@ -40,7 +40,8 @@ class BaseImFeatureDataLoader:
         self.order = np.random.permutation(len(self.order))
 
     def get_capitalization_feature(self, word):
-        return (sum(1 for c in word if c.isupper()))/len(word)
+        upper_count = sum(1 for c in word if c.isupper())
+        return upper_count/len(word)
 
     def get_batch(self, batch_size, batch_num):
         start = batch_num * batch_size
@@ -318,7 +319,7 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                     if word in self.embedding_dict:
                         embed = self.embedding_dict[word]
                         if self.add_cap_feat:
-                            embed = np.append(embed, self.get_capitalization_feature(word_orig))
+                            embed = embed + [self.get_capitalization_feature(word_orig)]
                     one_hot_caption[length] = embed
                 length += 1
 
