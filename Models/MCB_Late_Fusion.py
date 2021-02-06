@@ -23,7 +23,12 @@ class MCB_Late_Fusion(torch.nn.Module):
         self.decoder = torch.nn.Linear(in_features=decoder_dim, out_features=decoder_dim)
         self.classifier = torch.nn.Linear(in_features=decoder_dim, out_features=num_classes)
 
-    def forward(self, text, image, lengths):
+    def set_multi_task(self, last_layers, out_dims):
+        self.classifier = last_layers
+        self.task_out_dims = out_dims
+        self.out_dim = max(out_dims)
+
+    def forward(self, text, image, lengths, tasks=None):
         input = torch.nn.utils.rnn.pack_padded_sequence(text, lengths, batch_first=True, enforce_sorted=False)
 
         lstm_out, _ = self.LSTM(input)
@@ -39,6 +44,13 @@ class MCB_Late_Fusion(torch.nn.Module):
         decoder_out = self.decoder(mcb_out)
         decoder_out = torch.nn.ReLU()(decoder_out)
 
-        out = self.classifier(decoder_out)
+        if tasks is None:
+            out = self.classifier(decoder_out)
+        else:
+            out = torch.zeros((decoder_out.shape[0], self.out_dim))
+            
+            for task in range(len(self.classifier)):
+                indices = torch.nonzero(tasks == task, as_tuple=True)
+                out[indices[0], :self.task_out_dims[task]] = self.classifier[task](decoder_out[indices, :])
 
         return out
