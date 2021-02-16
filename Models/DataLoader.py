@@ -329,6 +329,7 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                                 print("Not float!")
                                 print(embed.dtype)
                                 print(word_orig)
+                                print(len(embed))
                                 print(self.get_capitalization_feature(word_orig))
                             #print(embed.shape)
                             #print(embed.dtype)
