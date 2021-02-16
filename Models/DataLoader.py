@@ -324,13 +324,13 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                             embed = list(embed) + [self.get_capitalization_feature(word_orig)]
                             #print(len(embed))
                             embed = np.array(embed)
-                            if embed.dtype != np.float:
-                                print(embed)
-                                print("Not float!")
-                                print(embed.dtype)
-                                print(word_orig)
-                                print(len(embed))
-                                print(self.get_capitalization_feature(word_orig))
+                            #if embed.dtype != np.float:
+                            #    print(embed)
+                            #    print("Not float!")
+                            #    print(embed.dtype)
+                            #    print(word_orig)
+                            #    print(len(embed))
+                            #    print(self.get_capitalization_feature(word_orig))
                             #print(embed.shape)
                             #print(embed.dtype)
                             #print(type(embed))
@@ -340,15 +340,15 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
 
             self.lengths[i] = length
             self.captions[i] = np.vstack(tuple(one_hot_caption))
-            for cap in one_hot_caption:
-                print(type(cap))
-                print(cap.dtype)
-            assert self.captions[i].dtype == np.float
+            #for cap in one_hot_caption:
+            #    print(type(cap))
+            #    print(cap.dtype)
+            #assert self.captions[i].dtype == np.float
 
         #print(self.captions.dtype)
         self.captions = np.array(self.captions)
         self.lengths = np.array(self.lengths)
-        print(self.captions.dtype)
+        #print(self.captions.dtype)
         print("Done!")
         #exit(0)
 
