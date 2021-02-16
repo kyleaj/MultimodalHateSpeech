@@ -324,7 +324,12 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                             embed = list(embed) + [self.get_capitalization_feature(word_orig)]
                             #print(len(embed))
                             embed = np.array(embed)
-                            assert embed.dtype == np.float
+                            if embed.dtype != np.float:
+                                print(embed)
+                                print("Not float!")
+                                print(embed.dtype)
+                                print(word_orig)
+                                print(self.get_capitalization_feature(word_orig))
                             #print(embed.shape)
                             #print(embed.dtype)
                             #print(type(embed))
