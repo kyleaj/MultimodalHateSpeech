@@ -300,7 +300,7 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
 
         assert "the" in self.embedding_dict  # Assuming it has an embedding for "the"...
         self.embed_dim = len(self.embedding_dict["the"]) + (1 if self.add_cap_feat else 0)
-        unknown = np.zeros_like(self.embedding_dict["the"])
+        unknown = np.zeros((len(self.embedding_dict["the"]) + 1)) if self.add_cap_feat else np.zeros_like(self.embedding_dict["the"])
         self.lengths = [0] * len(self.captions)
 
         print("Embedding dimension: " + str(self.embed_dim))
