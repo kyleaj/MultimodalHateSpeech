@@ -319,15 +319,15 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                     if word in self.embedding_dict:
                         embed = self.embedding_dict[word]
                         if self.add_cap_feat:
-                            print(self.get_capitalization_feature(word_orig))
-                            print(embed.shape)
+                            #print(self.get_capitalization_feature(word_orig))
+                            #print(embed.shape)
                             embed = list(embed) + [self.get_capitalization_feature(word_orig)]
-                            print(len(embed))
+                            #print(len(embed))
                             embed = np.array(embed)
-                            print(embed.shape)
-                            print(embed.dtype)
-                            print(type(embed))
-                            exit(0)
+                            #print(embed.shape)
+                            #print(embed.dtype)
+                            #print(type(embed))
+                            #exit(0)
                     one_hot_caption[length] = embed
                 length += 1
 
@@ -336,8 +336,9 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
 
         self.captions = np.array(self.captions)
         self.lengths = np.array(self.lengths)
-
+        print(self.captions.dtype)
         print("Done!")
+        exit(0)
 
 class ImFeatureDataLoader_Flickr(BaseImFeatureDataLoader):
     def __init__(self, path_to_csv, path_to_ims, device):
