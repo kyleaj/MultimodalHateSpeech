@@ -339,6 +339,9 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
 
             self.lengths[i] = length
             self.captions[i] = np.array(one_hot_caption)
+            for cap in one_hot_caption:
+                print(type(cap))
+                print(cap.dtype)
             assert self.captions[i].dtype == np.float
 
         #print(self.captions.dtype)
