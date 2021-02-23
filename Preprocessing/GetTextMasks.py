@@ -8,6 +8,10 @@ import easyocr
 image_dir = sys.argv[1]
 out_dir = sys.argv[2]
 
+debug_dir = None
+if (len(sys.argv) == 4):
+    debug_dir = sys.argv[3]
+
 reader = easyocr.Reader(['en'])
 
 start_time = time.time()
@@ -20,7 +24,7 @@ failed = []
 remaining = -1
 
 for i, im in enumerate(ims):
-    outpath = os.path.join(out_dir, im + ".npy")
+    outpath = os.path.join(out_dir, im + "_mask.npy")
     if (os.path.exists(outpath)) or not("jpg" in im.lower() or "png" in im.lower() or "jpeg" in im.lower()):
         continue
 
@@ -41,10 +45,10 @@ for i, im in enumerate(ims):
             max_y = max(a[1], b[1], c[1], d[1])
             mask[min_y:max_y,min_x:max_x,:] = 1
 
-        im = im*mask
-        cv2.imwrite("masked.png", im)
-
-        exit(0)
+        if debug_dir is not None:
+            cv2.imwrite(filename + "_masked.png", im*mask)
+            cv2.imwrite(filename + "_un_masked.png", im*(1-mask))
+        np.save(outpath, mask)
 
         output = output[0]
         output = output.cpu().numpy()
@@ -60,5 +64,10 @@ for i, im in enumerate(ims):
         failed.append(e)
         failed.append(im)
 
-    #print(str(i+1) + " / " + str(im_num) + ", about " + str(remaining) + "s left.")
-    #sys.stdout.write("\033[F") # Cursor up one line
+    print(str(i+1) + " / " + str(im_num) + ", about " + str(remaining) + "s left.")
+    sys.stdout.write("\033[F") # Cursor up one line
+
+print()
+print()
+print()
+print(failed)
