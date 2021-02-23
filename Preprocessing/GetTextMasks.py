@@ -33,7 +33,8 @@ for i, im in enumerate(ims):
         im = cv2.imread(filename)
         mask = np.zeros_like(im)
         for result in results:
-            a, b, c, d, _, _ = result
+            print(result)
+            a, b, c, d = result[0]
             min_x = min(a[0], b[0], c[0], d[0])
             min_y = min(a[1], b[1], c[1], d[1])
             max_x = max(a[0], b[0], c[0], d[0])
@@ -55,6 +56,7 @@ for i, im in enumerate(ims):
         remaining = (im_num - i - 1) / speed
         remaining = int(remaining * 100) / 100.0
     except Exception as e:
+        print(e)
         failed.append(e)
         failed.append(im)
 
