@@ -32,13 +32,10 @@ for i, im in enumerate(ims):
     filename = os.path.join(image_dir, im)
 
     try:
-        print("Getting boxes")
-        print(filename)
         results = reader.readtext(filename)
         im = cv2.imread(filename)
         mask = np.zeros_like(im)
         for result in results:
-            print(result)
             a, b, c, d = result[0]
             min_x = min(a[0], b[0], c[0], d[0])
             min_y = min(a[1], b[1], c[1], d[1])
@@ -47,8 +44,9 @@ for i, im in enumerate(ims):
             mask[min_y:max_y,min_x:max_x,:] = 1
 
         if not(debug_dir is None):
-            cv2.imwrite(filename + "_masked.png", im*mask)
-            cv2.imwrite(filename + "_un_masked.png", im*(1-mask))
+            debug_out = os.path.join(debug_dir, filename)
+            cv2.imwrite(debug_out + "_masked.png", im*mask)
+            cv2.imwrite(debug_out + "_un_masked.png", im*(1-mask))
         np.save(outpath, mask)
 
         elapsed = time.time() - start_time
@@ -56,7 +54,6 @@ for i, im in enumerate(ims):
         remaining = (im_num - i - 1) / speed
         remaining = int(remaining * 100) / 100.0
     except Exception as e:
-        print(e)
         failed.append(e)
         failed.append(im)
 
