@@ -45,15 +45,10 @@ for i, im in enumerate(ims):
             max_y = max(a[1], b[1], c[1], d[1])
             mask[min_y:max_y,min_x:max_x,:] = 1
 
-        if debug_dir is not None:
+        if not(debug_dir is None):
             cv2.imwrite(filename + "_masked.png", im*mask)
             cv2.imwrite(filename + "_un_masked.png", im*(1-mask))
         np.save(outpath, mask)
-
-        output = output[0]
-        output = output.cpu().numpy()
-        
-        np.save(outpath, output)
 
         elapsed = time.time() - start_time
         speed = (i+1) / elapsed
