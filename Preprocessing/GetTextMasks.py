@@ -25,7 +25,6 @@ for i, im in enumerate(ims):
         continue
 
     filename = os.path.join(image_dir, im)
-    input_image = Image.open(filename)
 
     try:
         print("Getting boxes")
