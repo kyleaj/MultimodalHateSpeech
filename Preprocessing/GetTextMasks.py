@@ -1,16 +1,14 @@
-import PIL
-from PIL import Image
-import pytesseract
 import os
 import sys
 import cv2
 import time
 import numpy as np
+import easyocr
 
 image_dir = sys.argv[1]
 out_dir = sys.argv[2]
 
-pytesseract.pytesseract.tesseract_cmd = r'path'
+reader = easyocr.Reader(['en'])
 
 start_time = time.time()
 
@@ -32,9 +30,20 @@ for i, im in enumerate(ims):
     try:
         print("Getting boxes")
         print(filename)
-        boxes = pytesseract.image_to_boxes(Image.open(filename))
-        print(type(boxes))
-        print(boxes)
+        results = reader.readtext(filename)
+        im = cv2.imread(filename)
+        mask = np.zeros_like(im)
+        for result in results:
+            a, b, c, d, _, _ = result
+            min_x = min(a[0], b[0], c[0], d[0])
+            min_y = min(a[1], b[1], c[1], d[1])
+            max_x = max(a[0], b[0], c[0], d[0])
+            max_y = max(a[1], b[1], c[1], d[1])
+            mask[min_y:max_y,min_x:max_x,:] = 1
+
+        im = im*mask
+        cv2.imwrite("masked.png", im)
+
         exit(0)
 
         output = output[0]
