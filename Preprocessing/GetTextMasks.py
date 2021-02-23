@@ -10,6 +10,7 @@ out_dir = sys.argv[2]
 
 debug_dir = None
 if (len(sys.argv) == 4):
+    print("Debug out on")
     debug_dir = sys.argv[3]
 
 reader = easyocr.Reader(['en'])
