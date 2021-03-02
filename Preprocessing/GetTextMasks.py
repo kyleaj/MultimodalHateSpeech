@@ -34,6 +34,10 @@ for i, im in enumerate(ims):
     try:
         results = reader.readtext(filename)
         im = cv2.imread(filename)
+        if im is None:
+            failed.append("Not found:")
+            failed.append(filename)
+            continue
         mask = np.zeros_like(im)
         for result in results:
             a, b, c, d = result[0]
@@ -55,7 +59,7 @@ for i, im in enumerate(ims):
         remaining = int(remaining * 100) / 100.0
     except Exception as e:
         failed.append(e)
-        failed.append(im)
+        failed.append(filename)
 
     print(str(i+1) + " / " + str(im_num) + ", about " + str(remaining) + "s left.")
     sys.stdout.write("\033[F") # Cursor up one line
@@ -64,3 +68,6 @@ print()
 print()
 print()
 print(failed)
+print("~~~~~~~~~~~~~")
+print(len(failed))
+print(im_num)
