@@ -41,10 +41,10 @@ for i, im in enumerate(ims):
         mask = np.zeros_like(im)
         for result in results:
             a, b, c, d = result[0]
-            min_x = min(a[0], b[0], c[0], d[0])
-            min_y = min(a[1], b[1], c[1], d[1])
-            max_x = max(a[0], b[0], c[0], d[0])
-            max_y = max(a[1], b[1], c[1], d[1])
+            min_x = round(min(a[0], b[0], c[0], d[0]))
+            min_y = round(min(a[1], b[1], c[1], d[1]))
+            max_x = round(max(a[0], b[0], c[0], d[0]))
+            max_y = round(max(a[1], b[1], c[1], d[1]))
             mask[min_y:max_y,min_x:max_x,:] = 1
 
         if not(debug_dir is None):
