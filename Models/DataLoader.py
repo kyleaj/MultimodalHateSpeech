@@ -339,7 +339,7 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                 length += 1
 
             self.lengths[i] = length
-            self.captions[i] = np.vstack(tuple(one_hot_caption))
+            self.captions[i] = np.array(one_hot_caption)
             #for cap in one_hot_caption:
             #    print(type(cap))
             #    print(cap.dtype)
