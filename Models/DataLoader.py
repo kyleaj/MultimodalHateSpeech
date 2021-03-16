@@ -310,6 +310,7 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
             one_hot_caption = [np.zeros(self.embed_dim)] * max_len
             length = 0
             for word in caption:
+                word_orig = word.copy()
                 word = word.lower()
                 if self.remove_stop_words and word in eng_stopwords:
                     continue
