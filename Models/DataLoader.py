@@ -33,6 +33,10 @@ class BaseImFeatureDataLoader:
     def post_process_labels(self):
         self.labels = np.array(self.labels)
 
+    def get_capitalization_feature(self, word):
+        upper_count = sum(1 for c in word if c.isupper())
+        return upper_count/len(word)
+
     def get_batches_in_epoch(self, batch_size):
         return (len(self.order) + 1) // batch_size
 
@@ -263,10 +267,11 @@ class ImFeatureDataLoader_Glove(ImFeatureDataLoader):
         print("Done!")
 
 class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
-    def __init__(self, path_to_json, image_network, device, embeddings_path, remove_stop_words=True, embedding_dict=None):
+    def __init__(self, path_to_json, image_network, device, embeddings_path, remove_stop_words=True, embedding_dict=None, add_cap_feat=True):
         self.remove_stop_words = remove_stop_words
         self.embeddings_path = os.path.join("Embeddings", embeddings_path)
         self.embedding_dict = embedding_dict
+        self.add_cap_feat = add_cap_feat
         super().__init__(path_to_json, image_network, device)
 
     def post_process_text(self):
@@ -295,7 +300,7 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
 
         assert "the" in self.embedding_dict  # Assuming it has an embedding for "the"...
         self.embed_dim = len(self.embedding_dict["the"])
-        unknown = np.zeros_like(self.embedding_dict["the"])
+        unknown = np.zeros((len(self.embedding_dict["the"]) + 1)) if self.add_cap_feat else np.zeros_like(self.embedding_dict["the"])
         self.lengths = [0] * len(self.captions)
 
         print("Embedding dimension: " + str(self.embed_dim))
@@ -312,6 +317,9 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                     embed = unknown
                     if word in self.embedding_dict:
                         embed = self.embedding_dict[word]
+                        if self.add_cap_feat:
+                            embed = list(embed) + [self.get_capitalization_feature(word_orig)]
+                            embed = np.array(embed)
                     one_hot_caption[length] = embed
                 length += 1
 
