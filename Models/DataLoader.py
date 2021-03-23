@@ -299,7 +299,7 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                 max_len = length
 
         assert "the" in self.embedding_dict  # Assuming it has an embedding for "the"...
-        self.embed_dim = len(self.embedding_dict["the"])
+        self.embed_dim = len(self.embedding_dict["the"]) + 1 if self.add_cap_feat else len(self.embedding_dict["the"])
         unknown = np.zeros((len(self.embedding_dict["the"]) + 1)) if self.add_cap_feat else np.zeros_like(self.embedding_dict["the"])
         self.lengths = [0] * len(self.captions)
 
@@ -321,6 +321,8 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                         if self.add_cap_feat:
                             embed = list(embed) + [self.get_capitalization_feature(word_orig)]
                             embed = np.array(embed)
+                    assert len(embed) == 301
+                    assert type(embed) == type(np.array([0]))
                     one_hot_caption[length] = embed
                 length += 1
 
