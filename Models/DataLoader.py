@@ -321,6 +321,8 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                         if self.add_cap_feat:
                             embed = list(embed) + [self.get_capitalization_feature(word_orig)]
                             embed = np.array(embed)
+                    print(len(embed))
+                    print(type(embed))
                     assert len(embed) == 301
                     assert type(embed) == type(np.array([0]))
                     one_hot_caption[length] = embed
