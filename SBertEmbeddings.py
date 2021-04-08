@@ -21,4 +21,4 @@ for line in index:
     output = output[0,:].detach().numpy()
 
     out_path = os.path.join(output_dir, str(entry["id"]))
-    np.save(out_path, pooler_output)
+    np.save(out_path, output)
