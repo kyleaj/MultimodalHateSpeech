@@ -15,12 +15,18 @@ class MCB_Late_Fusion(torch.nn.Module):
         self.classifier = torch.nn.Linear(in_features=256, out_features=num_classes)
 
     def forward(self, text, image, lengths):
-        text = torch.nn.ReLU()(self.text_process(text))
-        image = torch.nn.ReLU()(self.im_process(image))
+        text = self.text_process(text)
+        text = torch.nn.BatchNorm1d(512)(text)
+        text = torch.nn.ReLU()(text)
+
+        image = self.im_process(image)
+        image = torch.nn.BatchNorm1d(512)(image)
+        image = torch.nn.ReLU()(image)
 
         mcb_out = self.mcb(text, image)
 
         decoder_out = self.decoder(mcb_out)
+        decoder_out = torch.nn.BatchNorm1d(decoder_out)
         decoder_out = torch.nn.ReLU()(decoder_out)
 
         out = self.classifier(decoder_out)
