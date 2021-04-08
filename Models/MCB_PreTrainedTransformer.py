@@ -16,17 +16,17 @@ class MCB_Late_Fusion(torch.nn.Module):
 
     def forward(self, text, image, lengths):
         text = self.text_process(text)
-        text = torch.nn.BatchNorm1d(512)(text)
+        text = torch.nn.Dropout(0.5)(text)
         text = torch.nn.ReLU()(text)
 
         image = self.im_process(image)
-        image = torch.nn.BatchNorm1d(512)(image)
+        image = torch.nn.Dropout(0.5)(image)
         image = torch.nn.ReLU()(image)
 
         mcb_out = self.mcb(text, image)
 
         decoder_out = self.decoder(mcb_out)
-        decoder_out = torch.nn.BatchNorm1d(decoder_out)
+        decoder_out = torch.nn.Dropout(0.5)(decoder_out)
         decoder_out = torch.nn.ReLU()(decoder_out)
 
         out = self.classifier(decoder_out)
