@@ -665,3 +665,54 @@ class ImFeatureDataLoader_Coco_Word2Vec(ImFeatureDataLoader_Coco):
             self.captions[i] = (key, np.array(one_hot_caption))
 
         print("Done!")
+
+class BERTFeatureDataLoader(BaseImFeatureDataLoader):
+
+    def __init__(self, path_to_json, image_network, device, use_infilled=True):
+        super().__init__()
+
+        self.ims = []
+        self.captions = []
+        self.labels = []
+        self.order = []
+        self.lengths = None
+        self.device = device
+
+        index = open(path_to_json, "r")
+        print("Loading...")
+
+        for line in index:
+            entry = json.loads(line)
+
+            im_features = entry["img"] + ".npy"
+            im_features = im_features.split("/")[-1]
+            if use_infilled:
+                im_features = os.path.join("Image Features Infilled", im_features)
+            else:
+                im_features = os.path.join("Image Features", image_network, im_features)
+
+            if not os.path.exists(im_features):
+                print("Couldn't find " + str(entry["id"]))
+                print(im_features)
+                continue
+            im_features = np.load(im_features)
+            self.ims.append(im_features)
+
+            bert_features_path = os.path.join("BertEmbeddings", str(entry["id"]) + ".npy")
+            bert_features = np.load(bert_features_path)
+            
+            self.captions.append(bert_features)
+
+            self.labels.append(entry["label"])
+
+        self.order = np.random.permutation(len(self.ims))
+
+        self.image_embed_dim = self.ims[0].shape[0]
+        
+        print("Done!")
+
+        self.post_process_images()
+        self.post_process_labels()
+        self.post_process_text()
+
+        self.embed_dim = len(self.captions[0, :])
