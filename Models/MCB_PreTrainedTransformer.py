@@ -20,11 +20,11 @@ class MCB_Late_Fusion(torch.nn.Module):
 
     def forward(self, text, image, lengths):
         text = self.text_process(text)
-        text = self.drop1(text)
+        #text = self.drop1(text)
         text = torch.nn.ReLU()(text)
 
         image = self.im_process(image)
-        image = self.drop2(image)
+        #image = self.drop2(image)
         image = torch.nn.ReLU()(image)
 
         mcb_out = self.mcb(text, image)
