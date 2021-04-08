@@ -672,7 +672,7 @@ class ImFeatureDataLoader_Coco_Word2Vec(ImFeatureDataLoader_Coco):
 
 class BERTFeatureDataLoader(BaseImFeatureDataLoader):
 
-    def __init__(self, path_to_json, image_network, device, use_infilled=True):
+    def __init__(self, path_to_json, image_network, device, use_infilled=True, text_dir="BertEmbeddings"):
         super().__init__()
 
         self.ims = []
@@ -703,7 +703,7 @@ class BERTFeatureDataLoader(BaseImFeatureDataLoader):
             im_features = np.load(im_features)
             self.ims.append(im_features)
 
-            bert_features_path = os.path.join("BertEmbeddings", str(entry["id"]) + ".npy")
+            bert_features_path = os.path.join(text_dir, str(entry["id"]) + ".npy")
             bert_features = np.load(bert_features_path)
             
             self.captions.append(bert_features)
@@ -721,3 +721,8 @@ class BERTFeatureDataLoader(BaseImFeatureDataLoader):
         self.post_process_text()
 
         self.embed_dim = len(self.captions[0, :])
+
+class SBERTFeatureDataLoader(BERTFeatureDataLoader):
+    def __init__(self, path_to_json, image_network, device, use_infilled=True):
+        super().__init__(path_to_json, image_network, device, use_infilled, "SBertEmbeddings")
+        pass
