@@ -6,12 +6,18 @@ class MCB_Late_Fusion(torch.nn.Module):
     def __init__(self, text_embed_dim, image_embed_dim, decoder_dim, num_classes=2):
         super().__init__()
 
-        self.mcb = CompactBilinearPooling(text_embed_dim, image_embed_dim, decoder_dim)
+        self.im_process = torch.nn.Linear(in_features=image_embed_dim, out_features=512)
+        self.text_process = torch.nn.Linear(in_features=text_embed_dim, out_features=512)
 
-        self.decoder = torch.nn.Linear(in_features=decoder_dim, out_features=decoder_dim)
-        self.classifier = torch.nn.Linear(in_features=decoder_dim, out_features=num_classes)
+        self.mcb = CompactBilinearPooling(512, 512, 512)
+
+        self.decoder = torch.nn.Linear(in_features=512, out_features=256)
+        self.classifier = torch.nn.Linear(in_features=256, out_features=num_classes)
 
     def forward(self, text, image, lengths):
+        text = torch.nn.ReLU()(self.text_process(text))
+        image = torch.nn.ReLU()(self.im_process(image))
+
         mcb_out = self.mcb(text, image)
 
         decoder_out = self.decoder(mcb_out)
