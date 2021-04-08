@@ -133,7 +133,7 @@ class Trainer:
         if (self.val_data is None):
             return -1
         
-        f = open(self.file_name + "_TrainingProgress" + str(time.time()) + ".txt", "w")
+        #f = open(self.file_name + "_TrainingProgress" + str(time.time()) + ".txt", "w")
         with torch.no_grad():
                 #self.model.eval()
                 val_batches = self.val_data.get_batches_in_epoch(16)
