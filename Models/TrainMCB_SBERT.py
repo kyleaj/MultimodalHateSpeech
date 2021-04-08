@@ -25,5 +25,5 @@ model = MCB_Late_Fusion(train_data.embed_dim, train_data.image_embed_dim, 512).t
 loss = torch.nn.CrossEntropyLoss()
 opt = torch.optim.Adam(params=model.parameters(), lr=1e-3)
 
-trainer = Trainer(model, train_data, val_data, opt, loss, file_name="MCB_BERT_")
+trainer = Trainer(model, train_data, val_data, opt, loss, file_name="MCB_SBERT")
 trainer.train()
