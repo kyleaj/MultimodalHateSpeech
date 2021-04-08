@@ -68,7 +68,7 @@ class BaseImFeatureDataLoader:
 
 class ImFeatureDataLoader(BaseImFeatureDataLoader):
 
-    def __init__(self, path_to_json, image_network, device):
+    def __init__(self, path_to_json, image_network, device, use_infilled=True):
         super().__init__()
 
         self.ims = []
@@ -86,7 +86,10 @@ class ImFeatureDataLoader(BaseImFeatureDataLoader):
 
             im_features = entry["img"] + ".npy"
             im_features = im_features.split("/")[-1]
-            im_features = os.path.join("Image Features", image_network, im_features)
+            if use_infilled:
+                im_features = os.path.join("Image Features Infilled", im_features)
+            else:
+                im_features = os.path.join("Image Features", image_network, im_features)
 
             if not os.path.exists(im_features):
                 print("Couldn't find " + str(entry["id"]))
