@@ -25,5 +25,5 @@ for line in index:
     pooler_output = output[1]
     pooler_output = pooler_output[0,:].detach().numpy()
 
-    out_path = os.path.join(output_dir, str(entry[id]) + ".npz")
+    out_path = os.path.join(output_dir, str(entry["id"]) + ".npz")
     np.save(out_path, pooler_output)
