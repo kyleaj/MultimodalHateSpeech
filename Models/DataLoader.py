@@ -23,6 +23,7 @@ class BaseImFeatureDataLoader:
         self.order = None
         self.lengths = None
         self.device = None
+        self.use_lengths = True
 
     def post_process_images(self):
         self.ims = np.array(self.ims)
@@ -58,8 +59,11 @@ class BaseImFeatureDataLoader:
         labels = self.labels[indices]
         labels = torch.Tensor(labels).to(self.device).long()
 
-        lengths = self.lengths[indices]
-        lengths = torch.Tensor(lengths).to(self.device).long()
+        lengths = None
+
+        if self.use_lengths:
+            lengths = self.lengths[indices]
+            lengths = torch.Tensor(lengths).to(self.device).long()
 
         return text, ims, labels, lengths
 
@@ -677,6 +681,7 @@ class BERTFeatureDataLoader(BaseImFeatureDataLoader):
         self.order = []
         self.lengths = None
         self.device = device
+        self.use_lengths = False
 
         index = open(path_to_json, "r")
         print("Loading...")
