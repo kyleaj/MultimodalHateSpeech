@@ -17,10 +17,7 @@ for line in index:
     text = entry["text"]
 
     output = model.encode([text])
-    print(output.shape)
     output = output[0,:]
-    print(output.shape)
-    exit
 
     out_path = os.path.join(output_dir, str(entry["id"]))
     np.save(out_path, output)
