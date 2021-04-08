@@ -18,7 +18,7 @@ train_data = BERTFeatureDataLoader("train.jsonl", "Resnet152", device, embed_dir
 val_data = BERTFeatureDataLoader("dev.jsonl", "Resnet152", device, embed_dir)
 
 print("Embed dimension:")
-print(traiin_data.embed_dim)
+print(train_data.embed_dim)
 
 model = MCB_Late_Fusion(train_data.embed_dim, train_data.image_embed_dim, 512).to(device)
 
