@@ -6,6 +6,7 @@ import torch
 import json
 import os
 import gensim
+import pickle
 
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -726,3 +727,78 @@ class SBERTFeatureDataLoader(BERTFeatureDataLoader):
     def __init__(self, path_to_json, image_network, device, use_infilled=True):
         super().__init__(path_to_json, image_network, device, use_infilled, "SBertEmbeddings")
         pass
+
+class ImFeatureDataLoader_Word2Vec_AffectNet(ImFeatureDataLoader):
+    def __init__(self, path_to_json, image_network, device, embeddings_path, affect_pickle, remove_stop_words=True, embedding_dict=None, add_cap_feat=True):
+        self.remove_stop_words = remove_stop_words
+        self.embeddings_path = os.path.join("Embeddings", embeddings_path)
+        self.embedding_dict = embedding_dict
+        self.add_cap_feat = add_cap_feat
+        affect_in = open(affect_pickle, "rb")
+        self.affect_embeds = pickle.load(affect_in)
+        affect_in.close()
+        super().__init__(path_to_json, image_network, device)
+
+    def post_process_text(self):
+        if self.embedding_dict is None:
+            print("Loading embeddings...")
+            self.embedding_dict = gensim.models.KeyedVectors.load_word2vec_format(self.embeddings_path, binary=True)
+            print("Done!")
+        else:
+            print("Reusing embedding dictionary")
+
+        eng_stopwords = stopwords.words('english')
+
+        print("Post processing text...")
+
+        print("Getting max text length")
+        max_len = -1
+        for caption in self.captions:
+            length = 0
+            for word in caption:
+                word = word.lower()
+                if self.remove_stop_words and word in eng_stopwords:
+                    continue
+                length += 1
+            if length > max_len:
+                max_len = length
+
+        assert "the" in self.embedding_dict  # Assuming it has an embedding for "the"...
+        self.embed_dim = (len(self.embedding_dict["the"]) + 1 if self.add_cap_feat else len(self.embedding_dict["the"])) + 100
+        unknown = np.zeros((self.embed_dim))
+        self.lengths = [0] * len(self.captions)
+
+        print("Embedding dimension: " + str(self.embed_dim))
+
+        for i in range(len(self.captions)):
+            caption = self.captions[i]
+            one_hot_caption = [np.zeros(self.embed_dim)] * max_len
+            length = 0
+            for word in caption:
+                word_orig = word
+                word = word.lower()
+                if self.remove_stop_words and word in eng_stopwords:
+                    continue
+                if word.isalpha() or word.replace("_", "").isalpha():
+                    embed = unknown
+                    if word in self.embedding_dict:
+                        embed = self.embedding_dict[word]
+                        if self.add_cap_feat:
+                            embed = list(embed) + [self.get_capitalization_feature(word_orig)]
+                            embed = np.array(embed)
+                    if word in self.affect_embeds:
+                        embed = list(embed) + list(self.affect_embeds[word])
+                    else:
+                        embed = list(embed) + ([0]*100)
+                    embed = np.array(embed)
+                    assert len(embed) == 401
+                    one_hot_caption[length] = embed
+                length += 1
+
+            self.lengths[i] = length
+            self.captions[i] = np.array(one_hot_caption)
+
+        self.captions = np.array(self.captions)
+        self.lengths = np.array(self.lengths)
+
+        print("Done!")
