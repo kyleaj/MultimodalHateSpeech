@@ -14,8 +14,15 @@ else:
 
 embed_dir = "/tigress/kyleaj/Thesis/Embeddings/GoogleNews-vectors-negative300.bin"
 
-train_data = ImFeatureDataLoader_Word2Vec("train.jsonl", "Resnet152", device, embed_dir)
-val_data = ImFeatureDataLoader_Word2Vec("dev.jsonl", "Resnet152", device, embed_dir, embedding_dict=train_data.embedding_dict)
+train_json = "train.jsonl"
+dev_json = "dev.jsonl"
+
+if len(sys.argv) > 1 and sys.argv[1] == "spell":
+    train_json = "SpellCheckOuts/" + train_json
+    dev_json = "SpellCheckOuts/" + dev_json
+
+train_data = ImFeatureDataLoader_Word2Vec(train_json, "Resnet152", device, embed_dir)
+val_data = ImFeatureDataLoader_Word2Vec(dev_json, "Resnet152", device, embed_dir, embedding_dict=train_data.embedding_dict)
 
 model = MCB_Late_Fusion(512, 2, True, train_data.embed_dim, train_data.image_embed_dim, 512).to(device)
 
