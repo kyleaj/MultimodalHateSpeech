@@ -786,11 +786,14 @@ class ImFeatureDataLoader_Word2Vec_AffectNet(ImFeatureDataLoader):
                         if self.add_cap_feat:
                             embed = list(embed) + [self.get_capitalization_feature(word_orig)]
                             embed = np.array(embed)
-                    if word in self.affect_embeds:
-                        embed = list(embed) + list(self.affect_embeds[word])
-                    else:
-                        embed = list(embed) + ([0]*100)
-                    embed = np.array(embed)
+                        if word in self.affect_embeds:
+                            embed = list(embed) + list(self.affect_embeds[word])
+                        else:
+                            embed = list(embed) + ([0]*100)
+                        embed = np.array(embed)
+                    elif word in self.affect_embeds:
+                        word[-100:] = self.affect_embeds[word]
+                        word[-101] = self.get_capitalization_feature(word_orig)
                     assert len(embed) == 401
                     one_hot_caption[length] = embed
                 length += 1
