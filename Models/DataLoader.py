@@ -792,8 +792,8 @@ class ImFeatureDataLoader_Word2Vec_AffectNet(ImFeatureDataLoader):
                             embed = list(embed) + ([0]*100)
                         embed = np.array(embed)
                     elif word in self.affect_embeds:
-                        word[-100:] = self.affect_embeds[word]
-                        word[-101] = self.get_capitalization_feature(word_orig)
+                        embed[-100:] = self.affect_embeds[word]
+                        embed[-101] = self.get_capitalization_feature(word_orig)
                     assert len(embed) == 401
                     one_hot_caption[length] = embed
                 length += 1
