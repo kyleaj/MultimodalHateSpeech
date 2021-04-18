@@ -14,8 +14,15 @@ else:
 
 embed_dir = "/tigress/kyleaj/Thesis/Embeddings/GoogleNews-vectors-negative300.bin"
 
-train_data = BERTFeatureDataLoader("train.jsonl", "Resnet152", device, embed_dir)
-val_data = BERTFeatureDataLoader("dev.jsonl", "Resnet152", device, embed_dir)
+train_json = "train.jsonl"
+dev_json = "dev.jsonl"
+
+if len(sys.argv) > 1 and sys.argv[1] == "spell":
+    train_json = "SpellCheckOuts/" + train_json
+    dev_json = "SpellCheckOuts/" + dev_json
+
+train_data = BERTFeatureDataLoader(train_json, "Resnet152", device, embed_dir)
+val_data = BERTFeatureDataLoader(dev_json, "Resnet152", device, embed_dir)
 
 print("Embed dimension:")
 print(train_data.embed_dim)
