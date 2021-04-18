@@ -26,7 +26,7 @@ val_data = ImFeatureDataLoader_Word2Vec(dev_json, "Resnet152", device, embed_dir
 
 model = None
 
-if len(sys.argv) == 2:
+if len(sys.argv) == 2 and sys.argv[1] != "spell":
     print("Loading pretrained model...")
     model = torch.load(sys.argv[1])
     for param in model.LSTM.parameters():
