@@ -814,6 +814,7 @@ class ImFeatureDataLoader_Word2Vec_RaceGender(ImFeatureDataLoader_Word2Vec):
     def __init__(self, path_to_json, image_network, device, embeddings_path, race_gender_path, remove_stop_words=True, embedding_dict=None, add_cap_feat=True):
         self.race_gender_path = race_gender_path
         super().__init__(path_to_json, image_network, device, embeddings_path, remove_stop_words, embedding_dict, add_cap_feat)
+        self.load_race_gender()
 
     def load_race_gender(self):
         csv = pd.read_csv(self.race_gender_path)

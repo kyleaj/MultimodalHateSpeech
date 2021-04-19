@@ -19,7 +19,7 @@ class MCB_RaceGender(torch.nn.Module):
 
         self.mcb = CompactBilinearPooling(lstm_out, image_embed_dim, decoder_dim)
 
-        self.decoder = torch.nn.Linear(in_features=decoder_dim, out_features=decoder_dim)
+        self.decoder = torch.nn.Linear(in_features=decoder_dim + 9, out_features=decoder_dim)
         self.classifier = torch.nn.Linear(in_features=decoder_dim, out_features=num_classes)
 
     def forward(self, text, image, race_lengths):
