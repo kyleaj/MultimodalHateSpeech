@@ -7,6 +7,7 @@ import json
 import os
 import gensim
 import pickle
+import pandas as pd
 
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -80,6 +81,7 @@ class ImFeatureDataLoader(BaseImFeatureDataLoader):
         self.captions = []
         self.labels = []
         self.order = []
+        self.ids = []
         self.lengths = None
         self.device = device
 
@@ -102,6 +104,7 @@ class ImFeatureDataLoader(BaseImFeatureDataLoader):
                 continue
             im_features = np.load(im_features)
             self.ims.append(im_features)
+            self.ids.append(str(entry["id"]))
 
             text = entry["text"]
             text = word_tokenize(text)
@@ -805,3 +808,68 @@ class ImFeatureDataLoader_Word2Vec_AffectNet(ImFeatureDataLoader):
         self.lengths = np.array(self.lengths)
 
         print("Done!")
+
+class ImFeatureDataLoader_Word2Vec_RaceGender(ImFeatureDataLoader_Word2Vec):
+
+    def __init__(self, path_to_json, image_network, device, embeddings_path, race_gender_path, remove_stop_words=True, embedding_dict=None, add_cap_feat=True):
+        self.race_gender_path = race_gender_path
+        super().__init__(path_to_json, image_network, device, embeddings_path, remove_stop_words, embedding_dict, add_cap_feat)
+
+    def load_race_gender(self):
+        csv = pd.read_csv(self.race_gender_path)
+
+        data = {}
+        self.rg = []
+
+        for _, row in csv.iterrows():
+            race = eval(row["race_scores_fair"].replace(" ", ", "))
+            gender = eval(row["gender_scores_fair"].replace(" ", ", "))
+            #age = eval(row["age_scores_fair"].replace(" ", ", "))
+            racegender = race + gender
+            im_id = row["face_name_align"].split("/")[-1]
+            im_id = im_id.split("_")[0]
+            if im_id in data:
+                data[im_id].append(racegender)
+            else:
+                data[im_id] = [racegender]
+
+        for imid in self.ids:
+            if imid in data:
+                vals = data[imid][0]
+                vals = np.array(vals)
+                for val in data[imid][1:]:
+                    vals += np.array(val)
+                vals = vals / len(data[imid])
+                self.rg.append(vals)
+            else:
+                self.rg.append(np.zeros((9)))
+
+    def get_batch(self, batch_size, batch_num):
+        start = batch_num * batch_size
+        end = (batch_num + 1) * batch_size
+
+        indices = self.order[start:end]
+
+        ims = self.ims[indices]
+        ims = torch.Tensor(ims).to(self.device)
+
+        text = self.captions[indices]
+        text = torch.Tensor(text).to(self.device)
+
+        labels = self.labels[indices]
+        labels = torch.Tensor(labels).to(self.device).long()
+
+        lengths = None
+
+        if self.use_lengths:
+            lengths = self.lengths[indices]
+            lengths = torch.Tensor(lengths).to(self.device).long()
+
+        race_gen = self.rg[indices]
+        rage_gen = torch.Tensor(race_gen).to(self.device)
+
+        return text, ims, labels, (rage_gen, lengths)
+
+
+        
+
