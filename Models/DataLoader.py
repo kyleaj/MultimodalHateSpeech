@@ -858,6 +858,7 @@ class ImFeatureDataLoader_Word2Vec_RaceGender(ImFeatureDataLoader_Word2Vec):
                 self.rg.append(vals)
             else:
                 self.rg.append(np.zeros((9)))
+        self.rg = np.array(self.rg)
 
     def get_batch(self, batch_size, batch_num):
         start = batch_num * batch_size
