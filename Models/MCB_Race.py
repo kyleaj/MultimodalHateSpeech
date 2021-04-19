@@ -36,7 +36,7 @@ class MCB_RaceGender(torch.nn.Module):
 
         mcb_out = self.mcb(lstm_out, image)
 
-        mcb_out = torch.cat((mcb_out, race_gender_embedding))
+        mcb_out = torch.cat((mcb_out, race_gender_embedding), dim=1)
 
         decoder_out = self.decoder(mcb_out)
         decoder_out = torch.nn.ReLU()(decoder_out)
