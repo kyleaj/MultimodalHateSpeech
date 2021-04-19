@@ -832,12 +832,13 @@ class ImFeatureDataLoader_Word2Vec_RaceGender(ImFeatureDataLoader_Word2Vec):
                     data[im_id].append(racegender)
                 else:
                     data[im_id] = [racegender]
-            except e:
+            except:
                 print(row["race_scores_fair"])
                 print(row["gender_scores_fair"])
                 print(row["race_scores_fair"].replace(" ", ", "))
                 print(row["gender_scores_fair"].replace(" ", ", "))
-                raise e
+                race = eval(row["race_scores_fair"].replace(" ", ", "))
+                gender = eval(row["gender_scores_fair"].replace(" ", ", "))
 
         for imid in self.ids:
             if imid in data:
