@@ -822,8 +822,16 @@ class ImFeatureDataLoader_Word2Vec_RaceGender(ImFeatureDataLoader_Word2Vec):
 
         for _, row in csv.iterrows():
             try:
-                race = eval(row["race_scores_fair"].replace(" ", ", "))
-                gender = eval(row["gender_scores_fair"].replace(" ", ", "))
+                race = row["race_scores_fair"]
+                while "  " in race:
+                    race = race.replace("  ", " ")
+                race = race.replace(" ", ", ")
+                race = eval(race)
+
+                gender = row["gender_scores_fair"]
+                while "  " in gender:
+                    gender = gender.replace("  ", " ")
+                gender = eval(gender.replace(" ", ", "))
                 #age = eval(row["age_scores_fair"].replace(" ", ", "))
                 racegender = race + gender
                 im_id = row["face_name_align"].split("/")[-1]
