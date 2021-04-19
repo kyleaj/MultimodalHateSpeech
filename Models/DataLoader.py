@@ -332,8 +332,6 @@ class ImFeatureDataLoader_Word2Vec(ImFeatureDataLoader):
                         if self.add_cap_feat:
                             embed = list(embed) + [self.get_capitalization_feature(word_orig)]
                             embed = np.array(embed)
-                    print(len(embed))
-                    print(type(embed))
                     assert len(embed) == 301
                     assert type(embed) == type(np.array([0]))
                     one_hot_caption[length] = embed
@@ -823,16 +821,23 @@ class ImFeatureDataLoader_Word2Vec_RaceGender(ImFeatureDataLoader_Word2Vec):
         self.rg = []
 
         for _, row in csv.iterrows():
-            race = eval(row["race_scores_fair"].replace(" ", ", "))
-            gender = eval(row["gender_scores_fair"].replace(" ", ", "))
-            #age = eval(row["age_scores_fair"].replace(" ", ", "))
-            racegender = race + gender
-            im_id = row["face_name_align"].split("/")[-1]
-            im_id = im_id.split("_")[0]
-            if im_id in data:
-                data[im_id].append(racegender)
-            else:
-                data[im_id] = [racegender]
+            try:
+                race = eval(row["race_scores_fair"].replace(" ", ", "))
+                gender = eval(row["gender_scores_fair"].replace(" ", ", "))
+                #age = eval(row["age_scores_fair"].replace(" ", ", "))
+                racegender = race + gender
+                im_id = row["face_name_align"].split("/")[-1]
+                im_id = im_id.split("_")[0]
+                if im_id in data:
+                    data[im_id].append(racegender)
+                else:
+                    data[im_id] = [racegender]
+            except e:
+                print(row["race_scores_fair"])
+                print(row["gender_scores_fair"])
+                print(row["race_scores_fair"].replace(" ", ", "))
+                print(row["gender_scores_fair"].replace(" ", ", "))
+                raise e
 
         for imid in self.ids:
             if imid in data:
